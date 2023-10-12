@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WareHouse</title>
+    <link rel="icon" href="photo/icon.png">
+    <link rel="stylesheet" href="add.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+</head>
+
+<!-- Шапка сайта -->
+<header>
+    <a class = "active" href="add.html">
+    Add products
+</a>
+
+     <a href="delete.html">
+        Delete products
+</a>
+       <a href="location.html">
+        Location
+     </a>
+     <div class = "headerhome">
+       <a href = "site.html">  Home </a>
+     </div>
+</header>
+
+<body>
+    <!-- <script>
+        function isEmail() {
+         var str = document.getElementById("email").value;
+         var status = document.getElementById("status");
+         var re = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
+         if (re.test(str)) status.innerHTML = "Адрес правильный";
+           else status.innerHTML = "Адрес неверный";
+         if(isEmpty(str)) status.innerHTML = "Поле пустое";
+        }
+        function isEmpty(str){
+         return (str == null) || (str.length == 0);
+        }
+       </script> -->
+       <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+<!-- <script>
+
+function abc() {
+  document.querySelector(".decor").style.height = "1300px";
+}
+</script> -->
+
+    <form class="decor">
+        <div class="form-left-decoration"></div>
+        <div class="form-right-decoration"></div>
+        <div class="circle"></div>
+        <div class="form-inner">
+        <h3 id="h3">Adding a product</h3>
+
+        <p><label for="category">Category of product</label>
+        <input type="category" placeholder="Category">
+
+        <p><label for="name">Name of product</label>
+        <input type="name" placeholder="Name">
+
+        <p><label for="size">Size of product</label>
+        <input type="size" placeholder="Size">
+       
+        <button class = "addmore" type="button">+</button>
+        <br>
+        <button type ="submit" onclick="abc()">Send</button>
+        </div>
+        </form>
+
+        <br><br><br><br>
+        <div> </div>
+
+          
+          <script> 
+            $(".addmore").click(function () { 
+          
+              // Select the element that 
+              // is clicked on 
+              let curr_elem = $(".decor"); 
+          
+              // Set the amount to increase 
+              let increase_modifier = 1.5; 
+          
+              // Get the current width of the element 
+              // and parse the value to integer 
+              let curr_width =  
+                  parseInt(curr_elem.css("width"), 10); 
+          
+              // Get the current height of the element 
+              // and parse the value to integer 
+              let curr_height =  
+                  parseInt(curr_elem.css("height"), 10); 
+
+              // Set the CSS value of the element 
+              curr_elem.css({ 
+                // Set the new height and width 
+                // after multiplying 
+                width: curr_width * increase_modifier, 
+                height: curr_height * increase_modifier, 
+              }); 
+            }); 
+          </script> 
+
+
+
+</body>

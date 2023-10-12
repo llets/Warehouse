@@ -1,0 +1,370 @@
+header {
+    display: inline-block; 
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    flex-wrap: wrap;
+      background: #2f3478;
+  }
+  
+  .wrap-logo {
+    /*margin-left: 40%;*/
+     font-family: "Trirong", serif;
+    display: flex;
+    align-items:start ;
+  }
+  
+  header a {
+    font-family:  'PT Serif', serif;
+    /* margin-right: 20px; */
+    color: white;
+    padding: 30px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  
+  header a.logo {
+    font-size: 25px;
+  }
+  
+  header a:hover {
+    color: #a8a193;
+  }
+  
+  header a.active {
+    color: #a8a193;
+  }
+  a:visited {
+    color: #eceff3;
+  }
+  
+  .headerhome {
+    margin-left: 850px;
+    display: flex; 
+    float: right;
+    }
+body{
+    background-color: #eceff3;
+}  
+
+ .squarediv1{
+  margin-top:30px;
+ }
+ .squarediv{
+  display: flex;
+  margin-right: 20px; 
+  padding: 2px;
+  margin-bottom: 0px;
+ }
+ .square {
+
+  margin-right: 5px;
+  margin-bottom: 0px; 
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  background: #9698bf;
+}
+
+.square:hover{
+  background: #2f3478;
+}
+
+.text{
+  font-family: "Trirong", serif;
+  /* display: inline-block; */
+  float: left;
+  margin-right: 10px;
+  margin-top: 15px;
+}
+
+.squareminifree{
+  margin-top: 15px;
+  margin-right: 5px;
+  
+  float: left;
+  margin-left:310px;
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  background: #9698bf;
+  
+}
+.squareminiloaded{
+  margin-right: 5px;
+  margin-top: 15px;
+
+  float: left;
+
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  background: #2f3478;
+
+}
+
+
+.tabs {
+  font-size: 0;
+  margin: 30px auto 0;
+  position: relative;
+  margin-left:300px;
+  
+
+}
+
+.tabs>input[type="radio"] {
+  display: none;
+  position: relative;
+  margin: 50px auto 0;
+  width: 810px;
+ 
+}
+
+.tabs>div {
+  /* скрыть контент по умолчанию */
+  display: none;
+  border: 1px solid #e0e0e0;
+  padding: 10px 15px;
+  height: 420px;
+  position: relative;
+  max-width: 803px;
+  /* margin: 50px auto 0; */
+
+  border-radius: 0px 0px 10px 10px;
+
+}
+
+/* отобразить контент, связанный с вабранной радиокнопкой (input type="radio") */
+#tab-btn-1:checked~#content-1,
+#tab-btn-2:checked~#content-2,
+#tab-btn-3:checked~#content-3,
+#tab-btn-4:checked~#content-4,
+#tab-btn-5:checked~#content-5,
+#tab-btn-6:checked~#content-6,
+#tab-btn-7:checked~#content-7,
+#tab-btn-8:checked~#content-8 {
+  display: block;
+}
+
+.tabs>label {
+  font-family: "Trirong", serif;
+  border-radius: 10px 10px 0px 0px;
+  display: inline-block;
+  position: relative;
+    margin: 50px auto 0;
+
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  padding: 2px 8px;
+  font-size: 20px;
+  line-height: 1.5;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+  cursor: pointer;
+
+  top: 1px;
+}
+
+.tabs>label:not(:first-of-type) {
+  
+  border-left: none;
+}
+
+.tabs>input[type="radio"]:checked+label {
+  
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+.tabs>label:hover{
+  background-color: #898bb9;
+}
+
+
+
+.overlay {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  visibility: hidden;
+  /* фон затемнения */
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  position: fixed; /* фиксированное поцизионирование */
+  cursor: default; /* тип курсара */
+  -webkit-transition: opacity .5s;
+  -moz-transition: opacity .5s;
+  -ms-transition: opacity .5s;
+  -o-transition: opacity .5s;
+  transition: opacity .5s;
+  }
+  .overlay:target {
+  visibility: visible;
+  opacity: 1;
+  }
+  .is-image {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display:block;
+  margin: 10%;
+  width: 100%;
+  height: auto;
+  /* скругление углов встроенных картинок */
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  }
+  /* встроенные элементы м-медиа, фреймы */
+  embed, iframe {
+  top: 0;
+  right: 0;
+  bottom: 0; 
+  left: 0; 
+  display:block;
+  margin: auto;
+  min-width: 320px;
+  max-width: 600px;
+  width: 100%;
+  }
+  .popup h1 { /* заголовок 1 */
+  color: #008000;
+  text-align: left;
+  text-shadow: 0 1px 3px rgba(0,0,0,.3);
+  font:24px 'Trebuchet MS', Helvetica, sans-serif;
+  font-weight: bold;
+  }
+  .popup h2 { /* заголовок 2 */
+  color: #008000;
+  text-align: left;
+  text-shadow: 0 1px 3px rgba(0,0,0,.3);
+  font:22px 'Trebuchet MS', Helvetica, sans-serif;
+  }
+  /*** Формируем стили модального окна ***/
+  .popup {
+   
+
+  top: 0;
+  right: 0;
+  left: 0;
+  font-size: 20px;
+  z-index: 10;
+  display: block;
+  visibility: hidden;
+  margin: 0 auto;
+  width: 30%;
+  min-width: 320px;
+  max-width: 600px;
+  /* фиксированное позиционирование, окно стабильно при прокрутке */
+  position: fixed;
+  padding: 15px;
+  border: 1px solid #383838;
+  /* скругление углов */
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #eceff3;
+  /* внешняя тень блока */
+  -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  -ms-box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  -o-box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.8);
+  /* полная прозрачность окна, появление при клике */
+  opacity: 0;
+  /* эффект перехода (появление) */
+  -webkit-transition: all ease .5s;
+  -moz-transition: all ease .5s;
+  -ms-transition: all ease .5s;
+  -o-transition: all ease .5s;
+  transition: all ease .5s;
+  }
+  /* активируем появление окна и затемнение фона */
+  .overlay:target+.popup {
+    border-radius: 10px;
+  top: 20%; /* положение окна от верха страницы при появлении */
+  visibility: visible;
+  opacity: 1; /* убираем прозрачность */
+  }
+
+  /* формируем кнопку закрытия */
+  .close {
+ 
+  position: absolute;
+  top: -0px;
+  right: 0px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  transform: rotate(45deg);
+  /* background-color: #9698bf;
+  -webkit-box-shadow: 0px 0px 10px #000;
+  -moz-box-shadow: 0px 0px 10px #000;
+  box-shadow: 0px 0px 10px #000; */
+  text-align: center;
+  text-decoration: none;
+  line-height: 30px;
+  /* задаём значения и эффект перехода при наведении
+  -webkit-transition: all ease .8s;
+  -moz-transition: all ease .8s;
+  -ms-transition: all ease .8s;
+  -o-transition: all ease .8s;
+  transition: all ease .8s; */
+  }
+ 
+  .close:before {
+  color: black;
+  content: "+";
+  /* transform: rotate(45deg); */
+
+  font-size: 30px;
+  }
+
+  .close:hover {
+    color: #eceff3;
+}
+
+/* опционально при добавлении вложений */
+  .popup p, .popup div {
+  margin-bottom: 10px;
+  }
+  
+  
+  /* button */
+  
+  .button {
+  
+    font-size: 20px;
+    color: white;
+    width: 270px;
+    text-decoration: none;
+    padding: 10px 5px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    font-family: Helvetica, Arial, sans-serif;
+    transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    cursor: pointer;
+  
+  }
+  .button-blue {
+    background-color: #0600FF;
+    }
+  .button:hover {
+    background-color: #5555ff;
+    box-shadow:0 0 10px 10px #b7b7ff inset;
+  }
+  .button:active {
+      background-color: #0000ff;
+      box-shadow:0 0 0 0 #ffffff; 
+  }
