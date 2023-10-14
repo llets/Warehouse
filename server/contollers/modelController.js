@@ -5,11 +5,11 @@ class ModelController{
         try{
             // descrip can be null
             // sizeId cannot
-            const {sizeNumber, name, description} = req.body
-            if (!sizeNumber || !name){
+            const {sizeId, name, description} = req.body
+            if (!sizeId || !name){
                 return next(ApiError.badRequest("Нет названия модели или sizeId"))
             }
-            const size_record = await Size.findOne({where: {amount: sizeNumber}})
+            const size_record = await Size.findOne({where: {id: sizeId}})
             if (size_record === null) {
                 return next(ApiError.badRequest("Неправильное значение sizeId"))
             }
