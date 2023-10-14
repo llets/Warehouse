@@ -3,11 +3,16 @@ const ApiError = require('../error/ApiError')
 class ModelController{
     async create(req, res, next){
         try{
-            const {sizeId, name, description} = req.body
-            const size_record = await Size.findOne({where: {id: sizeId}})
-            // if (!size_record || !name){
-            //     return next(ApiError.badRequest("Нет имени имя или неправильный sizeId"))
-            // }
+            // descrip can be null
+            // sizeId cannot
+            const {sizeNumber, name, description} = req.body
+            if (!sizeNumber || !name){
+                return next(ApiError.badRequest("Нет названия модели или sizeId"))
+            }
+            const size_record = await Size.findOne({where: {amount: sizeNumber}})
+            if (size_record === null) {
+                return next(ApiError.badRequest("Неправильное значение sizeId"))
+            }
             const model = await Model.create({
                 sizeId: size_record.id,
                 name, description

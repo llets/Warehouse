@@ -19,6 +19,11 @@ class ShelfController{
         const shelf = await Shelf.findOne({ where: {id} })
         return res.json(shelf)
     }
+    // async getAllByRack(req, res){
+    //     const {rackId} = req.body
+    //     const shelves = await Shelf.findAll({ where: {rackId: rackId} })
+    //     return res.json(shelves)
+    // }
 }
 
 module.exports = new ShelfController()
