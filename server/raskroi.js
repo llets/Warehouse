@@ -345,8 +345,8 @@ function fill_partially_empty_shelves(arr_shelvesId, arr_shelvesSizes, l,b,n, ar
     flag=0;
     // пытаемся максимально заполнить полки и "запоминаем" их заполнения сразу в arr_id_of_shelves_of_new_goods[n][]
     while (sum(b)>0 && arr_shelvesId.length>0){ // условием выхода из цикла может быть 2 ситуации: кончились товары для размещения; кончились полки
-        empty_space_in_shelf=arr_shelvesSizes.pop(); // незанятое пространство полки
-        tmp_shelf_id=arr_shelvesId.pop(); // id частично занятой полки
+        empty_space_in_shelf=arr_shelvesSizes.shift(); // незанятое пространство полки
+        tmp_shelf_id=arr_shelvesId.shift(); // id частично занятой полки
         if (l[n-1]<=empty_space_in_shelf){ // если свободного места на полке меньше, чем размер самого маленького товара, то нет смысла разместить что-то
             flag=1; // если хотя бы один товар помещается в частично свободные полки, то возвращаемый b будет отличаться
             for (let i=0; i<n; i++){
@@ -374,7 +374,7 @@ function fill_partially_empty_shelves(arr_shelvesId, arr_shelvesSizes, l,b,n, ar
 
 function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, arr_shelvesSizes, arr_empty_shelvesId,
     first_empty_shelf_Id, last_id_of_goods){
-
+    //first_empty_shelf_Id = "1"
     // 1) Проверяем, что нам хватит места на складе для новых товаров (но, 
     //    возможно, товары не удастся разместить, даже если эта проверка прошла)
 
@@ -736,7 +736,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
 
         msg="Все товары успешно размещены на складе!";
     }
-    console.log(`иды полок новых товаров: ${JSON.stringify(arr_id_of_shelves_of_new_goods)}`)
+    //console.log(`иды полок новых товаров: ${JSON.stringify(arr_id_of_shelves_of_new_goods)}`)
     return [msg, arr_id_of_shelves_of_new_goods, arr_id_of_new_goods_of_n_models]
 }
 

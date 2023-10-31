@@ -63,9 +63,9 @@ class GoodController{
             
             //2. Вытаскиваем из бд все пустые полки (в порядке возрастания айди) и их количество
             let empty_shelves_count = -1
-            let arr_empty_shelves_id = new Array()
+            let arr_empty_shelves = new Array()
             try{
-                arr_empty_shelves_id = await Shelf.findAll({
+                arr_empty_shelves = await Shelf.findAll({
                     attributes: ['id'],
                     where:{
                         occupied_size: 0
@@ -73,22 +73,26 @@ class GoodController{
                     raw: true,
                     order: [['id', 'ASC']]
                 })
-                empty_shelves_count = arr_empty_shelves_id.length 
+                empty_shelves_count = arr_empty_shelves.length 
             }
             catch(e){
                 next(ApiError.badRequest("Получение пустых полок: " + e.message))
             }
+            let arr_empty_shelves_id = new Array()
+            for (let i = 0; i < arr_empty_shelves.length; i++){
+                arr_empty_shelves_id.push(arr_empty_shelves[i].id)
+            }
 
             // Нужно найти первую полку из зоны, где ещё нет товаров (самая дальняя пустая полка, при этом полка перед ней не пустая)
             // Если такой нет, то берётся самая последняя полка, которая никогда не должна быть занята.
-            let last_empty_shelf_id = -1 
+            let last_empty_shelf_id = '1' 
 
             //Чтобы найти такую полку мы должны найти последнюю непустую полку.
             //Сначала найдём все полки:
 
-            let arr_notempty_shelves_id = new Array()
+            let arr_notempty_shelves = new Array()
             try{
-                arr_notempty_shelves_id = await Shelf.findAll({
+                arr_notempty_shelves = await Shelf.findAll({
                     attributes: ['id'],
                     where:{
                         occupied_size:{ [Op.not]: 0 }
@@ -99,30 +103,40 @@ class GoodController{
             catch(e){
                 next(ApiError.badRequest("Получение непустых полок: " + e.message))
             }
+            let arr_notempty_shelves_id = new Array()
+            for (let i = 0; i < arr_notempty_shelves.length; i++){
+                arr_notempty_shelves_id.push(arr_notempty_shelves[i].id)
+            }
             
-
+            console.log(`arr_empty_shelves_id: ${arr_empty_shelves_id}`)
             //Далее будем с конца проверять, идёт ли после этой непустой полки пустая
-            try{    
-                for(let i = arr_notempty_shelves_id.length - 1; i >= 0; i--){
-                    if (arr_empty_shelves_id.includes(arr_notempty_shelves_id[i] + 1)){
-                        last_empty_shelf_id = arr_notempty_shelves_id[i] + 1
-                        break
+            if (arr_notempty_shelves.length == 0)
+                last_empty_shelf_id = '1'
+            else{
+                try{    
+                    for(let i = arr_notempty_shelves_id.length - 1; i >= 0; i--){
+                        if (arr_empty_shelves_id.includes((parseInt(arr_notempty_shelves_id[i]) + 1).toString())){
+                            last_empty_shelf_id = (parseInt(arr_notempty_shelves_id[i]) + 1).toString()
+                            break
+                        }
                     }
+                    // if (last_empty_shelf_id == -1){
+                    //     last_empty_shelf_id = 1025
+                    // }
                 }
-                if (last_empty_shelf_id == -1){
-                    last_empty_shelf_id = 1024
+                catch(e){
+                    next(ApiError.badRequest("Проверка, идёт ли после непустой полки пустая: " + e.message))
                 }
             }
-            catch(e){
-                next(ApiError.badRequest("Проверка, идёт ли после непустой полки пустая: " + e.message))
-            }
+            console.log(`last empty shelf id: ${last_empty_shelf_id}`)
 
             //3. Вытаскиваем из бд все непустые и не заполненные полки (в порядке возрастания АЙДИ).
             // Это двумерный массив 
+            let arr_occupied_shelves = new Array()
             let arr_occupied_shelves_id = new Array()
             let arr_occupied_shelves_sizes = new Array()
             try{
-                arr_occupied_shelves_id, arr_occupied_shelves_sizes = await Shelf.findAll({
+                arr_occupied_shelves = await Shelf.findAll({
                     attributes: ['id', 'occupied_size'],
                     where:{
                         occupied_size:{ [Op.between]: [1, 599] }
@@ -130,6 +144,11 @@ class GoodController{
                     order:[['id', 'ASC']],
                     raw: true
                 })
+                console.log(`Колисчество arr_occupied_shelves: ${arr_occupied_shelves.length}`)
+                for(let i = 0; i < arr_occupied_shelves.length; i++){
+                    arr_occupied_shelves_id.push(arr_occupied_shelves[i].id)
+                    arr_occupied_shelves_sizes.push(arr_occupied_shelves[i].occupied_size)
+                }
             }
 
             catch(e){
@@ -145,71 +164,125 @@ class GoodController{
                 next(ApiError.badRequest(e.message))
             }
 
-            //5. Добавляем товары: НЕ ИЗМЕНЯТЬ! ПОКА ЗАКОММЕНТИРОВАЛ, ЧТОБЫ В БД НЕ СОЗДАВАЛИСЬ ТОВАРЫ В ПРОЦЕССЕ ВНЕДРЕНИЯ ФУНКЦИИ
-            // let arr_id_new_goods = new Array()
-
-            // try{
-            //     for(let i = 0; i < arr_models_id.length; i++){
-            //         for (let j = 0; j < arr_goods_amount[i]; j++){
-            //             await Good.create({
-            //                 date_of_arrival: date_of_arrival,
-            //                 modelId: arr_models_id[i]
-            //             })
-            //             arr_id_new_goods.push(last_good_id + i + 1)
-            //         }
-            //     }
+            //перевод полученных из бд данных в нормальные массивы, с которыми сможет работать функция Чулпан
+            let arr_models_sizes_id = new Array()
+            for(let i = 0; i < arr_models_sizes.length; i++){
+                arr_models_sizes_id.push(arr_models_sizes[i].sizeId)
+            }
+            // let arr_occupied_shelves_id_forfunction = new Array()
+            // for(let i = 0; i < arr_occupied_shelves_id.length; i++){
+            //     arr_occupied_shelves_id_forfunction.push(arr_occupied_shelves_id[i])
             // }
-            // catch(e){
-            //     next(ApiError.badRequest("Добавление товаров в бд: " + e.message))
+            // let arr_occupied_shelves_sizes_forfunction = new Array()
+            // for(let i = 0; i < arr_occupied_shelves_sizes.length; i++){
+            //     arr_occupied_shelves_sizes_forfunction.push(arr_occupied_shelves_sizes[i])
             // }
-        // try{
-        //     let result = rask.add()
-        // }
-        // catch(e){
-        //     next(ApiError.badRequest("Добавление товаров в бд (алгоритм): " + e.message))
-        // }
+            // let arr_empty_shelves_id_forfunction = new Array()
+            // for(let i = 0; i < arr_empty_shelves_id.length; i++){
+            //     arr_empty_shelves_id_forfunction.push(arr_empty_shelves_id[i].id)
+            // }
+            console.log(`sizes: ${(arr_models_sizes_id)}`)
+            // console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id_forfunction))}`)
+            // console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes_forfunction))}`)
+            // console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id_forfunction))}`)
+            console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id))}`)
+            console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes))}`)
+            console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id))}`)
 
-        //перевод полученных из бд данных в нормальные массивы, с которыми сможет работать функция Чулпан
-        let arr_models_sizes_id = new Array()
-        for(let i = 0; i < arr_models_sizes.length; i++){
-            arr_models_sizes_id.push(arr_models_sizes[i].sizeId)
-        }
-        let arr_occupied_shelves_id_forfunction = new Array()
-        for(let i = 0; i < arr_occupied_shelves_id.length; i++){
-            arr_occupied_shelves_id_forfunction.push(arr_occupied_shelves_id[i].id)
-        }
-        let arr_occupied_shelves_sizes_forfunction = new Array()
-        for(let i = 0; i < arr_occupied_shelves_sizes.length; i++){
-            arr_occupied_shelves_sizes_forfunction.push(arr_occupied_shelves_sizes[i].amount)
-        }
-        let arr_empty_shelves_id_forfunction = new Array()
-        for(let i = 0; i < arr_empty_shelves_id.length; i++){
-            arr_empty_shelves_id_forfunction.push(arr_empty_shelves_id[i].id)
-        }
+            //получаем айди полок для новых товаров и айди новых товаров из функции Чулпан:
+            let add_msg = ""
+            let arr_shelves_of_new_goods = new Array()
+            let arr_id_of_new_goods_of_n_models = new Array()
+            const result = rask.add(
+                arr_models_id, arr_models_sizes_id, arr_goods_amount, userId,
+                //empty_shelves_count, arr_occupied_shelves_id_forfunction, arr_occupied_shelves_sizes_forfunction,
+                empty_shelves_count, arr_occupied_shelves_id, arr_occupied_shelves_sizes,
+                arr_empty_shelves_id, last_empty_shelf_id, last_good_id
+            )
+            add_msg = result[0]
+            arr_shelves_of_new_goods = result[1]
+            arr_id_of_new_goods_of_n_models = result[2]
 
-        //получаем айди полок для новых товаров и айди новых товаров из функции Чулпан:
-        let add_msg = ""
-        let arr_shelves_of_new_goods = new Array()
-        let arr_id_of_new_goods_of_n_models = new Array()
-        const result = rask.add(
-            arr_models_id, arr_models_sizes_id, arr_goods_amount, userId,
-            empty_shelves_count, arr_occupied_shelves_id_forfunction, arr_occupied_shelves_sizes_forfunction,
-            arr_empty_shelves_id_forfunction, last_empty_shelf_id, last_good_id
-        )
-        add_msg = result[0]
-        arr_shelves_of_new_goods = result[1]
-        arr_id_of_new_goods_of_n_models = result[2]
+            console.log(`Сообщение: ${(add_msg)}`)
+            console.log(`Полки: ${(JSON.stringify(arr_shelves_of_new_goods))}`)
+            console.log(`Айди товаров: ${(JSON.stringify(arr_id_of_new_goods_of_n_models))}`)
 
-        console.log(`Сообщение длины ${add_msg.length}, содержание: ${(add_msg)}`)
-        console.log(`Полки: ${(arr_shelves_of_new_goods)}`)
-        console.log(`Айди товаров: ${(arr_id_of_new_goods_of_n_models)}`)
 
-        return res.json(`Функция Чулпан вернула: ${JSON.stringify(add_msg)}. Полки для новых товаров: ${JSON.stringify(
-            arr_shelves_of_new_goods)}. Айди новых товаров: ${JSON.stringify(arr_id_of_new_goods_of_n_models)}. 
-        Товары моделей ${JSON.stringify(arr_models_id)} добавлены.
-        Размеры моделей: ${((arr_models_sizes))}, айди пустых полок: ${JSON.stringify(arr_empty_shelves_id)}, 
-        всего ${JSON.stringify(empty_shelves_count)}. Айди полупустых полок: ${JSON.stringify(arr_notempty_shelves_id)}`)
 
+            //5. Добавляем товары
+            let arr_id_new_storages = new Array()
+            let arr_id_new_goods = new Array()
+            let good_new_id = last_good_id + 1
+            try{
+                for(let i = 0; i < arr_models_id.length; i++){
+                    for (let j = 0; j < arr_goods_amount[i]; j++){
+                        
+                        //создаём товар
+                        
+                        try{
+                            await Good.create({
+                                    date_of_arrival: date_of_arrival,
+                                    modelId: arr_models_id[i]
+                                })
+                        }
+                        catch(e){
+                            next(ApiError.badRequest("Создание товара в бд: " + e.message))
+                        }
+
+                        //изменяем размер в соответствующей полке
+
+                        let shelf = new Array()
+                        try{
+                            shelf.push(await Shelf.findOne({
+                                where: {id: arr_shelves_of_new_goods[i][j]
+                                },
+                                attributes: ['occupied_size']
+                            }))
+                            console.log(shelf[0].occupied_size)
+                        }
+                        catch(e){
+                            next(ApiError.badRequest("Поиск полки в бд: " + e.message))
+                        }
+                            let size = parseInt(shelf[0].occupied_size) + parseInt(arr_models_sizes_id[i])
+                            console.log(`Размер: ${size}`)
+                        try{
+                            await Shelf.update({
+                                occupied_size: size
+                            },
+                            {
+                                where: {
+                                    id: arr_shelves_of_new_goods[i][j]
+                                },
+                            })
+                        }
+                        catch(e){
+                            next(ApiError.badRequest("Сохранение размера полки в бд: " + e.message))
+                        }
+
+                        //создаём ячейку хранилища
+                        
+                        try{
+                            const storage = await Storage.create({
+                                    goodId: good_new_id,
+                                    shelfId: arr_shelves_of_new_goods[i][j]
+                                })
+                                arr_id_new_storages.push(storage.id)
+                        }
+                        catch(e){
+                            next(ApiError.badRequest("Создание ячейки хранилища в бд: " + e.message))
+                        }
+                        
+                        arr_id_new_goods.push(good_new_id)
+                        good_new_id += 1
+                    }
+                }
+            }
+            catch(e){
+                next(ApiError.badRequest("Процесс добавления товаров в бд: " + e.message))
+            }
+
+
+            return res.json(`${add_msg} Товары моделей ${arr_models_id} добавлены. Айди новых товаров: ${arr_id_new_goods}. Полки для новых товаров: ${arr_shelves_of_new_goods}. Ячейки для новых товаров: ${arr_id_new_storages}.`)
             /*
             //если количество создаваемых товаров не указано
             if (!number){
