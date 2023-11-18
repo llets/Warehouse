@@ -169,22 +169,7 @@ class GoodController{
             for(let i = 0; i < arr_models_sizes.length; i++){
                 arr_models_sizes_id.push(arr_models_sizes[i].sizeId)
             }
-            // let arr_occupied_shelves_id_forfunction = new Array()
-            // for(let i = 0; i < arr_occupied_shelves_id.length; i++){
-            //     arr_occupied_shelves_id_forfunction.push(arr_occupied_shelves_id[i])
-            // }
-            // let arr_occupied_shelves_sizes_forfunction = new Array()
-            // for(let i = 0; i < arr_occupied_shelves_sizes.length; i++){
-            //     arr_occupied_shelves_sizes_forfunction.push(arr_occupied_shelves_sizes[i])
-            // }
-            // let arr_empty_shelves_id_forfunction = new Array()
-            // for(let i = 0; i < arr_empty_shelves_id.length; i++){
-            //     arr_empty_shelves_id_forfunction.push(arr_empty_shelves_id[i].id)
-            // }
             console.log(`sizes: ${(arr_models_sizes_id)}`)
-            // console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id_forfunction))}`)
-            // console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes_forfunction))}`)
-            // console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id_forfunction))}`)
             console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id))}`)
             console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes))}`)
             console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id))}`)
@@ -195,10 +180,13 @@ class GoodController{
             let arr_id_of_new_goods_of_n_models = new Array()
             const result = rask.add(
                 arr_models_id, arr_models_sizes_id, arr_goods_amount, userId,
-                //empty_shelves_count, arr_occupied_shelves_id_forfunction, arr_occupied_shelves_sizes_forfunction,
                 empty_shelves_count, arr_occupied_shelves_id, arr_occupied_shelves_sizes,
                 arr_empty_shelves_id, last_empty_shelf_id, last_good_id
             )
+
+            if (result[1] == null || result[2] == null)
+            next(ApiError.badRequest("Функция раскроя: " + msg))
+
             add_msg = result[0]
             arr_shelves_of_new_goods = result[1]
             arr_id_of_new_goods_of_n_models = result[2]
@@ -206,8 +194,6 @@ class GoodController{
             console.log(`Сообщение: ${(add_msg)}`)
             console.log(`Полки: ${(JSON.stringify(arr_shelves_of_new_goods))}`)
             console.log(`Айди товаров: ${(JSON.stringify(arr_id_of_new_goods_of_n_models))}`)
-
-
 
             //5. Добавляем товары
             let arr_id_new_storages = new Array()
@@ -283,75 +269,6 @@ class GoodController{
 
 
             return res.json(`${add_msg} Товары моделей ${arr_models_id} добавлены. Айди новых товаров: ${arr_id_new_goods}. Полки для новых товаров: ${arr_shelves_of_new_goods}. Ячейки для новых товаров: ${arr_id_new_storages}.`)
-            /*
-            //если количество создаваемых товаров не указано
-            if (!number){
-                const good = await Good.create({modelId: modelId, date_of_arrival: date_of_arrival})
-
-                const model = await Model.findOne({where: {id: modelId}})
-                const max_size = 600 - model.size
-                const shelf = await Shelf.findOne({where:  { occupied_size: {[Op.lt]: max_size}}})
-                if (!shelf_id && !good_id){
-                    const storage = await Storage.create({
-                        shelfId: shelf.id,
-                        goodId: good.id
-                    })
-                    await Shelf.update({occupied_size: shelf.occupied_size + model.size}, {where: {id: shelf.id}})
-                }
-                return res.json(modelsId, date_of_arrival, storage.id, shelf.id)
-            }
-            //если количество указано
-            for (let i = 0; i < number; i++) {
-                const good = await Good.create({modelId, date_of_arrival})
-
-                const model = await Model.findOne({where: {id: modelId}})
-                const max_size = 600// - model.size
-
-                const shelf = await Shelf.findOne({
-                    where: { 
-                    occupied_size: {
-                        [Op.lt]: max_size,
-                    }}})
-                if (shelf.id && good.id){
-                    const storage = await Storage.create({
-                        shelfId: shelf.id,
-                        goodId: good.id
-                    })
-                    await Shelf.update({occupied_size: shelf.occupied_size + model.size}, {where: {id: shelf.id}})
-                }
-            }
-            return res.json(`${number} товар(-ов) модели ${modelId} добавлено ${date_of_arrival}`)
-            */
-
-            // получение sizeId по массиву modelsId
-            // получение sizes из sizeId
-            // отправка в функцию Чулпан
-
-            // проверка, что размер всех товаров < свободное место на складе в функции Чулпан
-            // в функции Чулпан: невозможно разместить товары
-            // или вывод массива и потом запись в бд
-
-            // создание записи в таблице товаров
-            // const good =
-            //     await Good.create({
-            //         modelId: modelItem.id,
-            //         date_of_arrival: date_of_arrival
-            //     })
-            // создание записи в таблице логов
-            // const log =
-            //     await Log.create({
-            //         userId: user.id,
-            //         goodId: good.id,
-            //         action: "create"
-            //     })
-            // создание записи в таблице хранилища
-            // const storage =
-            //     await Storage.create({
-            //         goodId: good.id,
-            //         shelfId: shelf.id,
-            //         rackId: rack,id
-            //     })
-            // return res.json(good)
         }
         catch(e){
             next(ApiError.badRequest(e.message))
@@ -366,8 +283,93 @@ class GoodController{
         const good = await Good.findOne({ where: {id} })
         return res.json(good)
     }
-    async deleteOne(req, res){
-        const {id} = req.body
+    async deleteOne(req, res, next){
+        const {id} = req.params
+
+        //Из товара вытаскиваем модель, из модели её размер.
+        //Из ячейки хранилища вытаскиваем полку, меняем размер полки.
+        //Удаляем ячейку хранилища. Удаляем товар.
+        //1.1) достаём айди модели
+        let model_id
+        try{
+            model_id = await Good.findOne({
+                attributes:['modelId'],
+                where:{
+                    id: id
+                },
+                raw: true
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск айди модели удаляемого товара: " + e.message))
+        }
+        //1.2) достаём размер из найденной модели
+        let size
+        try {
+            size = await Model.findOne({
+                attributes: ['sizeId'],
+                where: {
+                    id: model_id.modelId
+                },
+                raw: true
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск размера удаляемого товара: " + e.message))
+        }
+        
+        //2.1) находим полку, на которой лежит товар
+        let shelf_id
+        try {
+            shelf_id = await Storage.findOne({
+                attributes: ['shelfId'],
+                where: {
+                    goodId: id
+                },
+                raw: true
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск полки товара: " + e.message))
+        }
+        //2.2) достаём размер этой полки
+        let curr_shelf_size
+        try {
+            curr_shelf_size = await Shelf.findOne({
+                attributes: ['occupied_size'],
+                where: {
+                    id: shelf_id.shelfId
+                },
+                raw: true
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск текущего размера полки: " + e.message))
+        }
+
+        //2.3) меняем размер этой полки
+        const new_size = (curr_shelf_size.occupied_size - size.sizeId).toString()
+
+        try {
+            await Shelf.update({
+                occupied_size: new_size
+            },
+            {
+                where: {
+                    id: shelf_id.shelfId
+                },
+            })
+        } catch(e){
+            next(ApiError.badRequest("Изменение раземра полки: " + e.message))
+        }
+
+        //3.1) Удаляем ячейку хранилища
+        try{
+            await Storage.destroy({
+                where: {
+                    goodId: id
+                }
+            });
+        } catch(e){
+            next(ApiError.badRequest("Удаление ячейки хранилища: " + e.message))
+        }
+        //3.2) Удаляем товар
         try{
             await Good.destroy({
                 where: {
@@ -376,22 +378,111 @@ class GoodController{
             });
             return res.json({message: "OK"})
         } catch(e){
-            next(ApiError.badRequest((e.message)))
+            next(ApiError.badRequest("Удаление товара в БД товаров: " + e.message))
         }
     }
-    async deleteByModelId(req, res){
+
+    async deleteByModelId(req, res, next){
         // to delete number of goods of the model, we pass this func in a loop
         const {modelId} = req.body
+        
+        //Находим рандомный товар заданной модели.
+        //Из модели вытаскиваем её размер.
+        //Из ячейки хранилища вытаскиваем полку, меняем размер полки.
+        //Удаляем ячейку хранилища. Удаляем товар.
+
+        //1. Ищем товар заданной модели
+        let id
+        try{
+            id = await Good.findOne({
+                attributes:['id'],
+                where:{
+                    modelId: modelId
+                }
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск товара соответствующей модели для удаления: " + e.message))
+        }
+        if (id == null || id < 0){
+            return res.json("Товаров данной модели на складе нет.")
+        }
+
+
+        //2.1) достаём размер из модели
+        let size
+        try {
+            size = await Model.findOne({
+                attributes: ['sizeId'],
+                where: {
+                    id: modelId
+                }
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск размера удаляемого товара: " + e.message))
+        }
+        
+        //3.1) находим полку, на которой лежит товар
+        let shelf_id
+        try {
+            shelf_id = await Storage.findOne({
+                attributes: ['shelfId'],
+                where: {
+                    goodId: id.id
+                }
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск полки товара: " + e.message))
+        }
+        //3.2) достаём размер этой полки
+        let curr_shelf_size
+        try {
+            curr_shelf_size = await Shelf.findOne({
+                attributes: ['occupied_size'],
+                where: {
+                    id: shelf_id.shelfId
+                }
+            })
+        } catch(e){
+            next(ApiError.badRequest("Поиск текущего размера полки: " + e.message))
+        }
+        //3.3) меняем размер этой полки
+        const new_size = (curr_shelf_size.occupied_size - size.sizeId).toString()
+
+        try {
+            await Shelf.update({
+                occupied_size: new_size
+            },
+            {
+                where: {
+                    id: shelf_id.shelfId
+                },
+            })
+        } catch(e){
+            next(ApiError.badRequest("Изменение раземра полки: " + e.message))
+        }
+
+        //4.1) Удаляем ячейку хранилища
+        try{
+            await Storage.destroy({
+                where: {
+                    goodId: id.id
+                }
+            });
+        } catch(e){
+            next(ApiError.badRequest("Удаление ячейки хранилища: " + e.message))
+        }
+        //4.2) Удаляем товар
         try{
             await Good.destroy({
                 where: {
-                    modelId: modelId
+                    id: id.id
                 }
             });
             return res.json({message: "OK"})
         } catch(e){
-            next(ApiError.badRequest((e.message)))
+            next(ApiError.badRequest("Удаление товара в БД товаров: " + e.message))
         }
+
     }
 }
 
