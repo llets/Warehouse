@@ -1,0 +1,32 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css";
+
+  .matrix {
+    flex-wrap: wrap;
+  }
+  .matrix > .btn {
+    width: 33%;
+    color: blanchedalmond;
+  }
+  .matrix > .btn:nth-child(3n+4) {
+    clear: left;
+    margin-left: 0;
+  }
+  .matrix > .btn:nth-child(n+4) {
+    margin-top: -1px;
+  }
+  
+  .matrix > .btn:first-child {
+    border-bottom-left-radius: 0;
+  }
+  .matrix > .btn:nth-child(3) {
+    border-top-right-radius: 4px !important;
+  }
+  .matrix > .btn:nth-last-child(3) {
+    border-bottom-left-radius: 4px !important;
+  }
+  .matrix > .btn:last-child {
+    border-top-right-radius: 0;
+  }
+  .btn-matrix .btn{
+    white-space: normal !important;
+    }
