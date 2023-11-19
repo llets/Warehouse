@@ -1,12 +1,18 @@
-import AddPage from "./pages/AddPage"
+import AddModel from "./pages/AddModel"
+import AddCategory from "./pages/AddCategory"
 import DeletePage from "./pages/DeletePage"
 import Storage from "./pages/Storage"
-import { ADD_ROUTE, DELETE_ROUTE, STORAGE_ROUTE } from "./utils/consts"
+import { ADD_ROUTE, DELETE_ROUTE, STORAGE_ROUTE,ADD_CATEGORY_ROUTE } from "./utils/consts"
 
 export const authRoutes=[
     {
     path:ADD_ROUTE,
-    Component:<AddPage/>
+    Component:<AddModel/>
+    },
+    {
+        path:ADD_CATEGORY_ROUTE,
+        Component:<AddCategory/>
+
     },
     {
         path:DELETE_ROUTE,

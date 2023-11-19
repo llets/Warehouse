@@ -6,27 +6,35 @@ import Button from "react-bootstrap/Button"
 import Row from "react-bootstrap/Row"
 import {observer} from "mobx-react-lite";
 
-const DeletePage = observer(() => {
+const AddCategory = observer(() => {
     const inputArr = [
         {
-          id: 0,
-          type: "input",
           value: ""
-        },
-        
+        }
       ];
       const [arr, setArr] = useState(inputArr);
     const handleChange = e => {
         e.preventDefault();
     
-        const index = e.target.id;
+        const index = 0;
+ 
         setArr(s => {
           const newArr = s.slice();
           newArr[index].value = e.target.value;
     
           return newArr;
-    });
+    });}
+    const sendHandler = e =>{
+        e.preventDefault();
+        console.log(arr);
+        setArr(s => {
+            const newArr = s.slice();
+            newArr[0].value = '';
+      
+            return newArr;});
+        
     };
+    
     return(
         
             <Container className="d-flex justify-content-center align-items-center"
@@ -38,7 +46,7 @@ const DeletePage = observer(() => {
                     className="mt-3"
                     placeholder={"name"}
                     onChange={handleChange}
-                    id={0}
+                    id={String(0)}
                     value={arr[0].value}
                 />
                
@@ -46,7 +54,7 @@ const DeletePage = observer(() => {
                 <Button
                 className="align-self-end"
                 variant={"outline-success"}
-                //onClick={click}
+                onClick={sendHandler}
                 >
                 Send
                 </Button>
@@ -58,4 +66,4 @@ const DeletePage = observer(() => {
                     
 );
 })
-export default DeletePage;
+export default AddCategory;

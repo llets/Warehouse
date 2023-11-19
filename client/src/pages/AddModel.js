@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row"
 import {observer} from "mobx-react-lite";
 
 
-const AddPage = observer(() => {
+const AddModel = observer(() => {
     const inputArr = [
         {
           id: 0,
@@ -29,18 +29,21 @@ const AddPage = observer(() => {
 
     const addInput = () => {
         setArr(s => {
-            //const lastId = s[s.length - 1].id;
+            const lastId = s[s.length - 1].id;
             return [
                 ...s,
                 {
+                    id:lastId,
                     type:"input",
                 value: ""
                 },
                 {
+                    id:lastId+1,
                     type:"input",
                     value: ""
                 },
                 {
+                    id:lastId+2,
                     type:"list",
                     value: ""
                 }
@@ -50,14 +53,19 @@ const AddPage = observer(() => {
     const handleChange = e => {
         e.preventDefault();
     
-        const index = e.target.id;
+        const index = Number(e.target.id);
+        //if (index == ''){index=0;}
         setArr(s => {
           const newArr = s.slice();
-          newArr[index].value = e.target.value;
+          newArr[index].value = (e.target.value);
     
           return newArr;
         });
     };
+    const sendHandler = e =>{
+        e.preventDefault();
+        console.log(arr);
+    }
 
     return(
     <Container className="d-flex justify-content-center align-items-center"
@@ -75,7 +83,7 @@ const AddPage = observer(() => {
                     className="mt-3"
                     placeholder={LocalId % 3 == 0?"name":"description"}
                     onChange={handleChange}
-                    id={LocalId}
+                    id={String(LocalId)}
                     value={item.value}
                 />
                
@@ -84,11 +92,11 @@ const AddPage = observer(() => {
                 else{
                     return(
                         <div>
-                        <select class="form-select" required aria-label="select example">
-                            <option value="">Откройте это меню выбора</option>
-                            <option value="1">Один</option>
-                            <option value="2">Два</option>
-                            <option value="3">Три</option>
+                        <select class="form-select mt-3" required aria-label="select example" id={LocalId} onChange={handleChange}>
+                            <option value="">Size</option>
+                            <option value="1">Small</option>
+                            <option value="2">Medium</option>
+                            <option value="3">Large</option>
                         </select>
                         </div>
                     );
@@ -105,7 +113,7 @@ const AddPage = observer(() => {
             <Button
                 className="align-self-end"
                 variant={"outline-success"}
-                //onClick={click}
+                onClick={sendHandler}
                 >
                 Send
                 </Button>
@@ -116,4 +124,4 @@ const AddPage = observer(() => {
     </Container>
     );
 });
-export default AddPage;
+export default AddModel;
