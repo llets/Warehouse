@@ -1,7 +1,8 @@
 const {Good, Model, Log, Storage, User, Shelf} = require('../models/models')
 const { Op } = require("sequelize");
 const rask = require('../raskroi')
-const ApiError = require('../error/ApiError')
+const ApiError = require('../error/ApiError');
+const { random } = require('../db');
 class GoodController{
     async create(req, res, next){
         try{
@@ -33,7 +34,7 @@ class GoodController{
                     }
                 }
                 catch(e){
-                    next(ApiError.badRequest("Проверка соответствия идентификаторов пришедших моделей: " + e.message))
+                    return next(ApiError.badRequest("Проверка соответствия идентификаторов пришедших моделей: " + e.message))
                 }
             }
             if (!date_of_arrival){
@@ -57,7 +58,7 @@ class GoodController{
                     }))
                 }
                 catch(e){
-                    next(ApiError.badRequest("Получение размеров пришедших моделей: " + e.message))
+                    return next(ApiError.badRequest("Получение размеров пришедших моделей: " + e.message))
                 }
             }
             
@@ -76,7 +77,7 @@ class GoodController{
                 empty_shelves_count = arr_empty_shelves.length 
             }
             catch(e){
-                next(ApiError.badRequest("Получение пустых полок: " + e.message))
+                return next(ApiError.badRequest("Получение пустых полок: " + e.message))
             }
             let arr_empty_shelves_id = new Array()
             for (let i = 0; i < arr_empty_shelves.length; i++){
@@ -101,14 +102,14 @@ class GoodController{
                 })
             }
             catch(e){
-                next(ApiError.badRequest("Получение непустых полок: " + e.message))
+                return next(ApiError.badRequest("Получение непустых полок: " + e.message))
             }
             let arr_notempty_shelves_id = new Array()
             for (let i = 0; i < arr_notempty_shelves.length; i++){
                 arr_notempty_shelves_id.push(arr_notempty_shelves[i].id)
             }
             
-            console.log(`arr_empty_shelves_id: ${arr_empty_shelves_id}`)
+            //console.log(`arr_empty_shelves_id: ${arr_empty_shelves_id}`)
             //Далее будем с конца проверять, идёт ли после этой непустой полки пустая
             if (arr_notempty_shelves.length == 0)
                 last_empty_shelf_id = '1'
@@ -125,10 +126,10 @@ class GoodController{
                     // }
                 }
                 catch(e){
-                    next(ApiError.badRequest("Проверка, идёт ли после непустой полки пустая: " + e.message))
+                    return next(ApiError.badRequest("Проверка, идёт ли после непустой полки пустая: " + e.message))
                 }
             }
-            console.log(`last empty shelf id: ${last_empty_shelf_id}`)
+            //console.log(`last empty shelf id: ${last_empty_shelf_id}`)
 
             //3. Вытаскиваем из бд все непустые и не заполненные полки (в порядке возрастания АЙДИ).
             // Это двумерный массив 
@@ -144,7 +145,7 @@ class GoodController{
                     order:[['id', 'ASC']],
                     raw: true
                 })
-                console.log(`Колисчество arr_occupied_shelves: ${arr_occupied_shelves.length}`)
+                //console.log(`Колисчество arr_occupied_shelves: ${arr_occupied_shelves.length}`)
                 for(let i = 0; i < arr_occupied_shelves.length; i++){
                     arr_occupied_shelves_id.push(arr_occupied_shelves[i].id)
                     arr_occupied_shelves_sizes.push(arr_occupied_shelves[i].occupied_size)
@@ -152,7 +153,7 @@ class GoodController{
             }
 
             catch(e){
-                next(ApiError.badRequest("Поиск непустых и не заполненных полок: " + e.message))
+                return next(ApiError.badRequest("Поиск непустых и не заполненных полок: " + e.message))
             }
 
             //4. Вытаскиваем из бд айди последнего товара
@@ -161,7 +162,7 @@ class GoodController{
                 last_good_id = await Good.max('id')
             }
             catch(e){
-                next(ApiError.badRequest(e.message))
+                return next(ApiError.badRequest(e.message))
             }
 
             //перевод полученных из бд данных в нормальные массивы, с которыми сможет работать функция Чулпан
@@ -169,10 +170,10 @@ class GoodController{
             for(let i = 0; i < arr_models_sizes.length; i++){
                 arr_models_sizes_id.push(arr_models_sizes[i].sizeId)
             }
-            console.log(`sizes: ${(arr_models_sizes_id)}`)
-            console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id))}`)
-            console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes))}`)
-            console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id))}`)
+            //console.log(`sizes: ${(arr_models_sizes_id)}`)
+            //console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id))}`)
+            //console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes))}`)
+            //console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id))}`)
 
             //получаем айди полок для новых товаров и айди новых товаров из функции Чулпан:
             let add_msg = ""
@@ -184,16 +185,16 @@ class GoodController{
                 arr_empty_shelves_id, last_empty_shelf_id, last_good_id
             )
 
-            if (result[1] == null || result[2] == null)
-            next(ApiError.badRequest("Функция раскроя: " + msg))
-
+            if (result[1] == null || result[2] == null){
+                return next(ApiError.badRequest("Функция раскроя: " + msg))
+            }
             add_msg = result[0]
             arr_shelves_of_new_goods = result[1]
             arr_id_of_new_goods_of_n_models = result[2]
 
-            console.log(`Сообщение: ${(add_msg)}`)
-            console.log(`Полки: ${(JSON.stringify(arr_shelves_of_new_goods))}`)
-            console.log(`Айди товаров: ${(JSON.stringify(arr_id_of_new_goods_of_n_models))}`)
+            //console.log(`Сообщение: ${(add_msg)}`)
+            //console.log(`Полки: ${(JSON.stringify(arr_shelves_of_new_goods))}`)
+            //console.log(`Айди товаров: ${(JSON.stringify(arr_id_of_new_goods_of_n_models))}`)
 
             //5. Добавляем товары
             let arr_id_new_storages = new Array()
@@ -212,7 +213,7 @@ class GoodController{
                                 })
                         }
                         catch(e){
-                            next(ApiError.badRequest("Создание товара в бд: " + e.message))
+                            return next(ApiError.badRequest("Создание товара в бд: " + e.message))
                         }
 
                         //изменяем размер в соответствующей полке
@@ -224,13 +225,13 @@ class GoodController{
                                 },
                                 attributes: ['occupied_size']
                             }))
-                            console.log(shelf[0].occupied_size)
+                            //console.log(shelf[0].occupied_size)
                         }
                         catch(e){
-                            next(ApiError.badRequest("Поиск полки в бд: " + e.message))
+                            return next(ApiError.badRequest("Поиск полки в бд: " + e.message))
                         }
                             let size = parseInt(shelf[0].occupied_size) + parseInt(arr_models_sizes_id[i])
-                            console.log(`Размер: ${size}`)
+                            //console.log(`Размер: ${size}`)
                         try{
                             await Shelf.update({
                                 occupied_size: size
@@ -242,7 +243,7 @@ class GoodController{
                             })
                         }
                         catch(e){
-                            next(ApiError.badRequest("Сохранение размера полки в бд: " + e.message))
+                            return next(ApiError.badRequest("Сохранение размера полки в бд: " + e.message))
                         }
 
                         //создаём ячейку хранилища
@@ -255,7 +256,7 @@ class GoodController{
                                 arr_id_new_storages.push(storage.id)
                         }
                         catch(e){
-                            next(ApiError.badRequest("Создание ячейки хранилища в бд: " + e.message))
+                            return next(ApiError.badRequest("Создание ячейки хранилища в бд: " + e.message))
                         }
                         
                         arr_id_new_goods.push(good_new_id)
@@ -264,14 +265,14 @@ class GoodController{
                 }
             }
             catch(e){
-                next(ApiError.badRequest("Процесс добавления товаров в бд: " + e.message))
+                return next(ApiError.badRequest("Процесс добавления товаров в бд: " + e.message))
             }
 
 
             return res.json(`${add_msg} Товары моделей ${arr_models_id} добавлены. Айди новых товаров: ${arr_id_new_goods}. Полки для новых товаров: ${arr_shelves_of_new_goods}. Ячейки для новых товаров: ${arr_id_new_storages}.`)
         }
         catch(e){
-            next(ApiError.badRequest(e.message))
+            return next(ApiError.badRequest(e.message))
         }
     }
     async getAll(req, res){
@@ -285,6 +286,25 @@ class GoodController{
     }
     async deleteOne(req, res, next){
         const {id} = req.params
+
+        let del_storage = true
+        let del_shelf = true
+
+        let good
+        try{
+            good = await Good.findOne({
+            where:{
+                id: id
+            },
+            raw: true
+        })
+        } catch(e){
+            return next(ApiError.badRequest("Поиск айди удаляемого товара: " + e.message))
+        }
+
+        if (good == null){
+            return res.json(`Товара с идентификатором ${id} на складе нет.`)
+        }
 
         //Из товара вытаскиваем модель, из модели её размер.
         //Из ячейки хранилища вытаскиваем полку, меняем размер полки.
@@ -300,8 +320,13 @@ class GoodController{
                 raw: true
             })
         } catch(e){
-            next(ApiError.badRequest("Поиск айди модели удаляемого товара: " + e.message))
+            return next(ApiError.badRequest("Поиск айди модели удаляемого товара: " + e.message))
         }
+
+        if (model_id == null){
+            return res.json(`Модели для товара ${id} не существует`)
+        }
+
         //1.2) достаём размер из найденной модели
         let size
         try {
@@ -313,7 +338,7 @@ class GoodController{
                 raw: true
             })
         } catch(e){
-            next(ApiError.badRequest("Поиск размера удаляемого товара: " + e.message))
+            return next(ApiError.badRequest("Поиск размера удаляемого товара: " + e.message))
         }
         
         //2.1) находим полку, на которой лежит товар
@@ -327,47 +352,65 @@ class GoodController{
                 raw: true
             })
         } catch(e){
-            next(ApiError.badRequest("Поиск полки товара: " + e.message))
-        }
-        //2.2) достаём размер этой полки
-        let curr_shelf_size
-        try {
-            curr_shelf_size = await Shelf.findOne({
-                attributes: ['occupied_size'],
-                where: {
-                    id: shelf_id.shelfId
-                },
-                raw: true
-            })
-        } catch(e){
-            next(ApiError.badRequest("Поиск текущего размера полки: " + e.message))
+            return next(ApiError.badRequest("Поиск полки товара: " + e.message))
         }
 
-        //2.3) меняем размер этой полки
-        const new_size = (curr_shelf_size.occupied_size - size.sizeId).toString()
-
-        try {
-            await Shelf.update({
-                occupied_size: new_size
-            },
-            {
-                where: {
-                    id: shelf_id.shelfId
-                },
-            })
-        } catch(e){
-            next(ApiError.badRequest("Изменение раземра полки: " + e.message))
+        if (shelf_id == null){
+            del_storage = false
+            //return res.json(`Полки с идентификатором ${shelf_id} не существует`)
         }
 
-        //3.1) Удаляем ячейку хранилища
-        try{
-            await Storage.destroy({
-                where: {
-                    goodId: id
+        if (del_storage == true){
+            //2.2) достаём размер этой полки
+            let curr_shelf_size
+            try {
+                curr_shelf_size = await Shelf.findOne({
+                    attributes: ['occupied_size'],
+                    where: {
+                        id: shelf_id.shelfId
+                    },
+                    raw: true
+                })
+            } catch(e){
+                return next(ApiError.badRequest("Поиск текущего размера полки: " + e.message))
+            }
+
+            if (curr_shelf_size == null){
+                del_shelf = false
+            }
+
+            if (del_shelf == true){
+            //2.3) меняем размер этой полки
+                let new_size
+                try{
+                    new_size = (curr_shelf_size.occupied_size - size.sizeId).toString()
+                } catch(e){
+                    return next(ApiError.badRequest("Задаём новый размер полки: " + e.message))
                 }
-            });
-        } catch(e){
-            next(ApiError.badRequest("Удаление ячейки хранилища: " + e.message))
+
+                try {
+                    await Shelf.update({
+                        occupied_size: new_size
+                    },
+                    {
+                        where: {
+                            id: shelf_id.shelfId
+                        },
+                    })
+                } catch(e){
+                    return next(ApiError.badRequest("Изменение раземра полки: " + e.message))
+                }
+            }
+            //3.1) Удаляем ячейку хранилища
+            try{
+                await Storage.destroy({
+                    where: {
+                        goodId: id
+                    }
+                });
+            } catch(e){
+                return next(ApiError.badRequest("Удаление ячейки хранилища: " + e.message))
+            }
         }
         //3.2) Удаляем товар
         try{
@@ -378,13 +421,14 @@ class GoodController{
             });
             return res.json({message: "OK"})
         } catch(e){
-            next(ApiError.badRequest("Удаление товара в БД товаров: " + e.message))
+            return next(ApiError.badRequest("Удаление товара в БД товаров: " + e.message))
         }
     }
 
     async deleteByModelId(req, res, next){
-        // to delete number of goods of the model, we pass this func in a loop
-        const {modelId} = req.body
+        
+        let del_storage = true
+        let del_shelf = true
         
         //Находим рандомный товар заданной модели.
         //Из модели вытаскиваем её размер.
@@ -392,21 +436,30 @@ class GoodController{
         //Удаляем ячейку хранилища. Удаляем товар.
 
         //1. Ищем товар заданной модели
+
+        const {model_Id} = req.params
+        let modelId
+        if (model_Id == undefined){
+            //return res.json("Товаров данной модели на складе нет.") 
+            modelId = Math.floor(Math.random() * 3 + 1)
+        }
+        else{
+            modelId = model_Id
+        }
+
         let id
         try{
             id = await Good.findOne({
-                attributes:['id'],
-                where:{
-                    modelId: modelId
-                }
-            })
+            where:{
+                modelId: modelId
+            }
+        })
         } catch(e){
-            next(ApiError.badRequest("Поиск товара соответствующей модели для удаления: " + e.message))
+            return next(ApiError.badRequest("Поиск товара соответствующей модели для удаления: " + e.message))
         }
-        if (id == null || id < 0){
-            return res.json("Товаров данной модели на складе нет.")
+        if (id == null){
+            return res.json("Товаров данной модели на складе нет!")
         }
-
 
         //2.1) достаём размер из модели
         let size
@@ -418,7 +471,7 @@ class GoodController{
                 }
             })
         } catch(e){
-            next(ApiError.badRequest("Поиск размера удаляемого товара: " + e.message))
+            return next(ApiError.badRequest("Поиск размера удаляемого товара: " + e.message))
         }
         
         //3.1) находим полку, на которой лежит товар
@@ -431,45 +484,64 @@ class GoodController{
                 }
             })
         } catch(e){
-            next(ApiError.badRequest("Поиск полки товара: " + e.message))
-        }
-        //3.2) достаём размер этой полки
-        let curr_shelf_size
-        try {
-            curr_shelf_size = await Shelf.findOne({
-                attributes: ['occupied_size'],
-                where: {
-                    id: shelf_id.shelfId
-                }
-            })
-        } catch(e){
-            next(ApiError.badRequest("Поиск текущего размера полки: " + e.message))
-        }
-        //3.3) меняем размер этой полки
-        const new_size = (curr_shelf_size.occupied_size - size.sizeId).toString()
-
-        try {
-            await Shelf.update({
-                occupied_size: new_size
-            },
-            {
-                where: {
-                    id: shelf_id.shelfId
-                },
-            })
-        } catch(e){
-            next(ApiError.badRequest("Изменение раземра полки: " + e.message))
+            return next(ApiError.badRequest("Поиск полки товара: " + e.message))
         }
 
-        //4.1) Удаляем ячейку хранилища
-        try{
-            await Storage.destroy({
-                where: {
-                    goodId: id.id
+        if (shelf_id == null){
+            del_storage = false
+            //return res.json("Не найдена ячейка для удаляемого товара.")
+        }
+
+        if (del_storage == true){
+            //3.2) достаём размер этой полки
+            let curr_shelf_size
+            try {
+                curr_shelf_size = await Shelf.findOne({
+                    attributes: ['occupied_size'],
+                    where: {
+                        id: shelf_id.shelfId
+                    }
+                })
+            } catch(e){
+                return next(ApiError.badRequest("Поиск текущего размера полки: " + e.message))
+            }
+
+            if (curr_shelf_size == null){
+                del_shelf = false
+                //return res.json("Не найдена полка для удаляемого товара.")
+            }
+            
+            if (del_shelf == true){
+                //3.3) меняем размер этой полки
+                const new_size = (curr_shelf_size.occupied_size - size.sizeId).toString()
+
+                try {
+                    await Shelf.update({
+                        occupied_size: new_size
+                    },
+                    {
+                        where: {
+                            id: shelf_id.shelfId
+                        },
+                    })
+                } catch(e){
+                    return next(ApiError.badRequest("Изменение раземра полки: " + e.message))
                 }
-            });
-        } catch(e){
-            next(ApiError.badRequest("Удаление ячейки хранилища: " + e.message))
+            }
+
+            //4.1) Удаляем ячейку хранилища
+            
+            if (del_storage == true){
+                try{
+                    await Storage.destroy({
+                        where: {
+                            goodId: id.id
+                        }
+                    });
+                } catch(e){
+                    return next(ApiError.badRequest("Удаление ячейки хранилища: " + e.message))
+                }
+            }
         }
         //4.2) Удаляем товар
         try{
@@ -480,9 +552,8 @@ class GoodController{
             });
             return res.json({message: "OK"})
         } catch(e){
-            next(ApiError.badRequest("Удаление товара в БД товаров: " + e.message))
+            return next(ApiError.badRequest("Удаление товара в БД товаров: " + e.message))
         }
-
     }
 }
 
