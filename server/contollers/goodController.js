@@ -189,6 +189,8 @@ class GoodController{
             //console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes))}`)
             //console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id))}`)
 
+            console.log(`arr_models_sizes: ${arr_models_sizes}`)
+
             //получаем айди полок для новых товаров и айди новых товаров из функции Чулпан:
             let add_msg = ""
             let arr_shelves_of_new_goods = new Array()

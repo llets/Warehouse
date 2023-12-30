@@ -377,7 +377,18 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
     //first_empty_shelf_Id = "1"
     // 1) Проверяем, что нам хватит места на складе для новых товаров (но, 
     //    возможно, товары не удастся разместить, даже если эта проверка прошла)
-
+    let input_data = {
+        "arr_models_Id": arr_modelsId,
+        "arr_models_sizes": l,
+        "amount of goods of each model": b, 
+        "count_of_empty_shelves": count_of_empty_shelves, 
+        "arr_shelvesId": arr_shelvesId,
+        "arr_shelvesSizes": arr_shelvesSizes,
+        "arr_empty_shelvesId": arr_empty_shelvesId,
+        "first_empty_shelf_Id": first_empty_shelf_Id,
+        "last_id_of_goods": last_id_of_goods,
+    }
+    console.log(input_data)
     // проверяем входные данные на корректность
     if (arr_modelsId.length!=b.length || b.length!=l.length){
         return ["Получены некорректные данные!", null, null];
