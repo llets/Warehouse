@@ -16,7 +16,7 @@ class RackController{
                 for (let i = 0; i < shelves_number; i++){
                         await Shelf.create({
                             number: i + 1,
-                            max_size: 600,
+                            max_size: 10,
                             occupied_size: 0,
                             rackId: rack.id
                         })

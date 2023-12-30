@@ -5,5 +5,6 @@ const shelfController = require('../contollers/shelfController')
 router.post('/', shelfController.create)
 router.get('/', shelfController.getAll)
 router.get('/:id', shelfController.getOne)
+router.delete('/', shelfController.delete_excess)
 
 module.exports = router

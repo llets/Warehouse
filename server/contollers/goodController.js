@@ -1,4 +1,4 @@
-const {Good, Model, Log, Storage, User, Shelf} = require('../models/models')
+const {Good, Model, Log, Storage, User, Shelf, Size} = require('../models/models')
 const { Op } = require("sequelize");
 const rask = require('../raskroi')
 const ApiError = require('../error/ApiError');
@@ -46,10 +46,10 @@ class GoodController{
 
             //Получение данных для упаковки
             //1. Вытаскиваем из бд размеры, которые поступили на склад
-            let arr_models_sizes = new Array()
+            let arr_models_attr_sizeId = new Array()
             for (let i = 0; i < arr_models_id.length; i++){
                 try{
-                    arr_models_sizes.push(await Model.findOne({
+                    arr_models_attr_sizeId.push(await Model.findOne({
                         attributes: ['sizeId'],
                         where: {
                             id: arr_models_id[i]
@@ -165,12 +165,26 @@ class GoodController{
                 return next(ApiError.badRequest(e.message))
             }
 
-            //перевод полученных из бд данных в нормальные массивы, с которыми сможет работать функция Чулпан
-            let arr_models_sizes_id = new Array()
-            for(let i = 0; i < arr_models_sizes.length; i++){
-                arr_models_sizes_id.push(arr_models_sizes[i].sizeId)
+            // //перевод полученных из бд данных в нормальные массивы, с которыми сможет работать функция Чулпан
+            // let normal_arr_models_attr_sizeId = new Array()
+            // for(let i = 0; i < arr_models_attr_sizeId.length; i++){
+            //     normal_arr_models_attr_sizeId.push(arr_models_attr_sizeId[i].sizeId)
+            // }
+
+            let arr_models_sizes = new Array()
+            for(let i = 0; i < arr_models_attr_sizeId.length; i++){
+                const size_attr_amount = await Size.findOne({
+                    ttributes: ['amount'],
+                    where:{
+                        id: arr_models_attr_sizeId[i].sizeId
+                    },
+                    raw: true
+                })
+                console.log(`size_attr_amount: ${size_attr_amount.amount}`)
+                arr_models_sizes.push(size_attr_amount.amount)
             }
-            //console.log(`sizes: ${(arr_models_sizes_id)}`)
+
+            //console.log(`sizes: ${(normal_arr_models_attr_sizeId)}`)
             //console.log(`arr_occupied_shelves_id: ${(JSON.stringify(arr_occupied_shelves_id))}`)
             //console.log(`arr_occupied_shelves_sizes: ${(JSON.stringify(arr_occupied_shelves_sizes))}`)
             //console.log(`arr_empty_shelves_id: ${(JSON.stringify(arr_empty_shelves_id))}`)
@@ -180,7 +194,7 @@ class GoodController{
             let arr_shelves_of_new_goods = new Array()
             let arr_id_of_new_goods_of_n_models = new Array()
             const result = rask.add(
-                arr_models_id, arr_models_sizes_id, arr_goods_amount, userId,
+                arr_models_id, arr_models_sizes, arr_goods_amount, userId,
                 empty_shelves_count, arr_occupied_shelves_id, arr_occupied_shelves_sizes,
                 arr_empty_shelves_id, last_empty_shelf_id, last_good_id
             )
@@ -190,6 +204,7 @@ class GoodController{
             }
             add_msg = result[0]
             arr_shelves_of_new_goods = result[1]
+            console.log(`arr_shelves_of_new_goods: ${arr_shelves_of_new_goods}`)
             arr_id_of_new_goods_of_n_models = result[2]
 
             //console.log(`Сообщение: ${(add_msg)}`)
@@ -230,7 +245,7 @@ class GoodController{
                         catch(e){
                             return next(ApiError.badRequest("Поиск полки в бд: " + e.message))
                         }
-                            let size = parseInt(shelf[0].occupied_size) + parseInt(arr_models_sizes_id[i])
+                            let size = parseInt(shelf[0].occupied_size) + parseInt(arr_models_sizes[i])
                             //console.log(`Размер: ${size}`)
                         try{
                             await Shelf.update({
