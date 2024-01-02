@@ -129,7 +129,7 @@ function checking_x_for_optimality(alfa,x,n){
         }
         // переходим на этап 2
         return checking_x_for_optimality(alfa,x,n);
-        
+
     }
 }
 
@@ -574,7 +574,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
             // заполняем arr_id_of_shelves_of_new_goods[][], обрабатывая x_floor[] и каждую строку alfa[i]
             // и заполняя возможно сразу несколько строк arr_id_of_shelves_of_new_goods[][]
             if (alfa.toString()!=([]).toString()){ // если матрица не пуста
-                for (let i=0; i<n_new; i++){
+                for (let i=0; i< n_new; i++){
                     while (x_floor[i][0]>0){
                         tmp_id_shelf=arr_empty_shelvesId_ordered.shift();
                         for (let j=0; j<n_new; j++){
