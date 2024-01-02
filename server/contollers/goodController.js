@@ -165,7 +165,8 @@ class GoodController{
                 //console.log(`Колисчество arr_occupied_shelves: ${arr_occupied_shelves.length}`)
                 for(let i = 0; i < arr_occupied_shelves.length; i++){
                     arr_occupied_shelves_id.push(arr_occupied_shelves[i].id)
-                    arr_occupied_shelves_sizes.push(arr_occupied_shelves[i].occupied_size)
+                    console.log(10 - arr_occupied_shelves[i].occupied_size)
+                    arr_occupied_shelves_sizes.push(10 - arr_occupied_shelves[i].occupied_size)
                 }
             }
 

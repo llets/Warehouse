@@ -36,8 +36,27 @@ class ShelfController{
         catch(e){
             return next(ApiError.badRequest(e.message))
         }
+
+        const size_shelves_excess = await Shelf.findAll({
+            where: {
+                occupied_size:{ [Op.gt]: 10 }
+            }
+        })
+
+        try{
+            for(let i = 0; i < size_shelves_excess.length; i++){
+                await size_shelves_excess[i].update({
+                    occupied_size: 10
+                })
+            }
+        }
+        catch(e){
+            return next(ApiError.badRequest(e.message))
+        }
+
+
         //const shelf = await Shelf.findOne({ where: {id} })
-        return res.json(`Пустые шкафы с айди > 1024 удалены`)
+        return res.json(`Пустые шкафы с айди > 1024 удалены, шкафы с размером > 10 получили размер 10`)
     }
     // async getAllByRack(req, res){
     //     const {rackId} = req.body
