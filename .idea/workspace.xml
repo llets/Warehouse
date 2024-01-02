@@ -5,83 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="49c93abd-73d2-4dd3-a34a-e793a4c51b7d" name="Changes" comment="React &amp; fixing some bugs.">
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/public/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/public/logo192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/public/logo512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/public/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/public/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddCard.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddCategoryCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddCategoryCard.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddForm.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddModelCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AddModelCard.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AppRouter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AuthRegCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/AuthRegCard.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/DeleteCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/DeleteCard.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/DeleteForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/DeleteForm.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/Head.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/Head.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/RegLogTab.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/StorageCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/StorageCard.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/Tab.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/TabCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/TabCube.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/TabCubeRow.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/TabLine.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/TabLine.module.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/TabLittleCube.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/tabs/loginTab.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/components/tabs/regTab.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/http/goodAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/http/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/http/modelAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/http/sizeAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/http/storageAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/http/userAPI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/images/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/images/box.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/pages/AddCategoryPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/pages/AddModelPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/pages/AddPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/pages/AuthRegPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/pages/DeletePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/pages/StoragePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/routes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/store/modelStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/store/sizeStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/store/storageStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/store/userStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client2/src/utils/consts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/contollers/goodController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/contollers/goodController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/contollers/rackController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/contollers/rackController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/contollers/storageController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/contollers/storageController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/contollers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/contollers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/models/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/models.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/postman/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/postman/users.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/raskroi.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/raskroi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/goodRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/goodRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/modelRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/modelRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/rackRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/rackRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/shelfRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/shelfRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/sizeRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/sizeRouter.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +15,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -122,7 +53,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ea8f7a77&quot;,
     &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.13.0&quot;,
     &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.13.0&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Александра/Desktop/Warehouse&quot;,
@@ -135,6 +66,16 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="raskroi.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/server/raskroi.js" working-dir="$PROJECT_DIR$/server">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.raskroi.js" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
