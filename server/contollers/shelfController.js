@@ -1,4 +1,5 @@
 const {Shelf} = require('../models/models')
+const { Op } = require("sequelize");
 const ApiError = require('../error/ApiError')
 class ShelfController{
     async create(req, res, next){
@@ -7,7 +8,7 @@ class ShelfController{
             const shelf = await Shelf.create({number, rackId, max_size, occupied_size})
             return res.json(shelf)
         } catch (e) {
-            next(ApiError.badRequest(e.message))
+            return next(ApiError.badRequest(e.message))
         }
     }
     async getAll(req, res){
@@ -18,6 +19,25 @@ class ShelfController{
         const {id} = req.params
         const shelf = await Shelf.findOne({ where: {id} })
         return res.json(shelf)
+    }
+    async delete_excess(req, res, next){
+        const shelves_excess = await Shelf.findAll({
+            where: {
+                id:{ [Op.gt]: 1024 },
+                occupied_size: 0
+            }
+        })
+
+        try{
+            for(let i = 0; i < shelves_excess.length; i++){
+                shelves_excess[i].destroy()
+            }
+        }
+        catch(e){
+            return next(ApiError.badRequest(e.message))
+        }
+        //const shelf = await Shelf.findOne({ where: {id} })
+        return res.json(`Пустые шкафы с айди > 1024 удалены`)
     }
     // async getAllByRack(req, res){
     //     const {rackId} = req.body
