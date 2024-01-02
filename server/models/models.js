@@ -33,11 +33,11 @@ const User = sequelize.define('user', {
     id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
     login: {type: DataTypes.TEXT, unique: true},
     password: {type: DataTypes.TEXT, allowNull:false},
-    name: {type: DataTypes.TEXT, allowNull:false},
+    role: {type: DataTypes.STRING, defaultValue: 'USER'}
 })
 const Log = sequelize.define('log', {
     id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
-    action: {type: DataTypes.TEXT, allowNull:false,},
+    action: {type: DataTypes.TEXT, allowNull:false,}
 })
 
 Rack.hasMany(Shelf)

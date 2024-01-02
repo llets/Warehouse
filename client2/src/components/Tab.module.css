@@ -1,0 +1,92 @@
+.tab{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 1100px;
+    height: 600px;
+    /*background-color: #9698bf;*/
+}
+
+.tabLine{
+    height: 520px;
+    width: 260px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.cube{
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    /*height: 210px;*/
+    /*width: 195px;*/
+    height: 220px;
+    width: 220px;
+}
+
+.cube_row{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+}
+
+.littleCube{
+    align-items: center;
+    /*background-color: #0F144E;*/
+    background-color: #666CBC;
+    border-radius: 5px;
+    color: white;
+    cursor: help;
+    /*cursor: pointer;*/
+    display: flex;
+    position: relative;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+    font-size: 22px;
+}
+
+.help{
+    align-items: center;
+    background-color: #eceff3;
+    border-radius: 5px;
+    color: black;
+    display: none;
+    justify-content: space-around;
+    left: 25px;
+    min-height: 100px;
+    min-width: 230px;
+    padding: 10px;
+    position: absolute;
+    top: 25px;
+    z-index: +2;
+}
+
+.littleCube:hover .help{
+    display: flex;
+}
+
+.box{
+    margin: 9px;
+    height: 100px;
+    width: 100px;
+}
+
+.info{
+    width: auto;
+    white-space: pre;
+}
+
+.header{
+    display: flex;
+    justify-content: center;
+}
+
+.table{
+    display: flex;
+    justify-content: center;
+}

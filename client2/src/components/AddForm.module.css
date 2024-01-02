@@ -1,0 +1,50 @@
+.form_inner {
+    display: flex;
+    flex-direction: column;
+    padding: 25px 0;
+    height: 200px;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 3px solid #2f3478;
+}
+.form_inner input, .form_inner textarea {
+    display: block;
+    height: 40px;
+    width: 100%;
+    padding: 0 20px;
+    background: #E9EFF6;
+    line-height: 40px;
+    border-width: 0;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+.model {
+    display: flex;
+    color: grey;
+    text-decoration: none;
+    height: 40px;
+    width: 800px;
+    font-size: 20px;
+    background-color: #E9EFF6;
+    border-radius: 20px;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+}
+
+.model:after  {
+    font-size: 40px;
+    content:" \203A";
+    transform: rotate(90deg);
+}
+
+.category_dropdown{
+    width: 700px;
+    border-radius: 15px;
+}
+
+.list_item{
+    padding: 0 !important;
+    font-size: 20px !important;
+}

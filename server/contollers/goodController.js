@@ -5,7 +5,24 @@ const ApiError = require('../error/ApiError')
 class GoodController{
     async create(req, res, next){
         try{
-            const {userId, date_of_arrival, arr_models_id, arr_goods_amount } = req.body
+            const {userId, string_date_of_arrival, string_models_id, string_goods_amount } = req.body
+            let arr_models_id = JSON.parse(string_models_id)
+            let arr_goods_amount = JSON.parse(string_goods_amount)
+
+            arr_goods_amount = arr_goods_amount.map((item) => Number(item))
+            arr_models_id = arr_models_id.map((item) => Number(item))
+
+            // 31-01-2024-23-59
+            // 31st of Jan, 2024
+            // 23:59
+            // or 11:59pm
+            let parts = string_date_of_arrival.split('-')
+
+            // Please pay attention to the month (parts[1]); JavaScript counts months from 0:
+            // January - 0, February - 1, etc.
+            // creating date: year, month, day, hours, minutes
+            let date_of_arrival = new Date(parts[2], parts[1] - 1, parts[0], parts[3], parts[4]);
+
             //userId - айди пользователя
             //date_of_arrival - дата прибытия
             //arr_models_id - массив идентификаторов моделей товаров, которые прибыли на склад. Размер n
@@ -20,7 +37,7 @@ class GoodController{
             if (!date_of_arrival){
                 return next(ApiError.badRequest("Не указана дата прибытия товаров"))
             }
-            if (arr_models_id.length != arr_goods_amount.length){
+            if (arr_models_id.length !== arr_goods_amount.length){
                 return next(ApiError.badRequest("Число моделей и количество размеров не совпадает "))
             }
             if (!arr_models_id){
@@ -139,7 +156,7 @@ class GoodController{
                 arr_occupied_shelves = await Shelf.findAll({
                     attributes: ['id', 'occupied_size'],
                     where:{
-                        occupied_size:{ [Op.between]: [1, 599] }
+                        occupied_size:{ [Op.between]: [1, 9] }
                     },
                     order:[['id', 'ASC']],
                     raw: true
@@ -206,10 +223,10 @@ class GoodController{
                         //создаём товар
                         
                         try{
-                            await Good.create({
+                            good_new_id = (await Good.create({
                                     date_of_arrival: date_of_arrival,
                                     modelId: arr_models_id[i]
-                                })
+                                })).id
                         }
                         catch(e){
                             next(ApiError.badRequest("Создание товара в бд: " + e.message))
@@ -384,7 +401,7 @@ class GoodController{
 
     async deleteByModelId(req, res, next){
         // to delete number of goods of the model, we pass this func in a loop
-        const {modelId} = req.body
+        const {modelId} = req.params
         
         //Находим рандомный товар заданной модели.
         //Из модели вытаскиваем её размер.
@@ -403,7 +420,9 @@ class GoodController{
         } catch(e){
             next(ApiError.badRequest("Поиск товара соответствующей модели для удаления: " + e.message))
         }
-        if (id == null || id < 0){
+        console.log(id)
+        console.log(modelId)
+        if (id === undefined || id === null || id < 0){
             return res.json("Товаров данной модели на складе нет.")
         }
 

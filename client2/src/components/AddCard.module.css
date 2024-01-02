@@ -1,0 +1,59 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 70px;
+    background-color: #eceff3;
+    min-height: 92vh;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    height: auto;
+    padding: 50px;
+    width: 900px;
+    border-radius: 50px;
+}
+
+.title{
+    margin-top: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: #444;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.addButton{
+    border-radius: 40px !important;
+    background: #4a509e !important;
+    border: none !important;
+    border-bottom: 4px solid #2f3478 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 30px !important;
+    width: 50px;
+    height: 50px;
+}
+
+.sendButton {
+    border-radius: 40px !important;
+    background: #4a509e !important;
+    border: none !important;
+    border-bottom: 4px solid #2f3478 !important;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
+    font-size: 25px !important;
+    width: 200px;
+    height: 50px;
+}
