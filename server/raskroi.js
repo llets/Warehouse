@@ -22,7 +22,7 @@ function checking_x_for_optimality(alfa,x,n){
     // Если вектор y - допустимый, то x - оптимальный (по признаку оптимальности).
     // Шаг 1 
     // 1.1
-    
+
     // проверка на лин. зависимость строк матрицы (если строки зависимы, то нельзя найти y)
     if (det(alfa)==0){
         // если матрица оказалась линейной, 
@@ -60,16 +60,16 @@ function checking_x_for_optimality(alfa,x,n){
 
     // Если в результате прямого хода выполнится условие
     if (f[L-1]<=1){
-    //     то x - оптимальный вектор
+        //     то x - оптимальный вектор
         return [alfa,x];
     }else{
-    // иначе, выполняется обратный ход; 
-    // определяется новый способ раскроя alfa[j0] вместо одного
+        // иначе, выполняется обратный ход;
+        // определяется новый способ раскроя alfa[j0] вместо одного
         alfa_new=[]; // новый способ раскроя 
         for (let i=0; i<n; i++){
-            alfa_new[i]=0;            
+            alfa_new[i]=0;
         }
-    
+
         l_tmp=L-1;
         while(l_tmp>=l0-1){
             alfa_new[i_arr[l_tmp]-1] +=1;
@@ -177,8 +177,8 @@ function initial_process_of_input(l,b,n){
     b_new=[];
     n_new=0;
     // счетчик кол-ва повторений (необходим для правильного формирования новых векторов)
-    count_of_repeats=0; 
- 
+    count_of_repeats=0;
+
     // заполнение новых векторов без повторений в l
     for (let i=0; i<n; ++i){
         l_new.push(l[i]);
@@ -195,7 +195,7 @@ function initial_process_of_input(l,b,n){
             }
         }
     }
- 
+
     // т.к., сформировав новые векторы и n, мы потеряли часть информации
     // (об отдельном кол-ве моделей с одинаковыми размерами),
     // необходима возможность ее восстановить - 
@@ -213,7 +213,7 @@ function initial_process_of_input(l,b,n){
             }
         }
     }
-    
+
     return [l_new,b_new,n_new, arr_of_sizes_place];
 }
 
@@ -362,7 +362,7 @@ function fill_partially_empty_shelves(arr_shelvesId, arr_shelvesSizes, l,b,n, ar
     }
 
     if (flag!=0){ // хотя бы один товар был размещен, возвращаем обновленный b
-         // переставляем элементы b[] так, чтобы они соответствовали l_old[] 
+        // переставляем элементы b[] так, чтобы они соответствовали l_old[]
         for (let i=0; i<n; i++){
             index_in_old_version=l_old.indexOf(l[i]);
             b_old[index_in_old_version]=b[i];
@@ -372,16 +372,27 @@ function fill_partially_empty_shelves(arr_shelvesId, arr_shelvesSizes, l,b,n, ar
     return [b_old, l_old]; // т.к. мы изменяли элементы в коде функции l[] и b[], то будем возвращать нужные нам l[] и b[]
 }
 
-function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, arr_shelvesSizes, arr_empty_shelvesId,
-    first_empty_shelf_Id, last_id_of_goods){
+function add(arr_modelsId,l_input,b_input, userId, count_of_empty_shelves, arr_shelvesId, arr_shelvesSizes, arr_empty_shelvesId,
+             first_empty_shelf_Id, last_id_of_goods){
+
+    l = []
+    b = []
+    for (let i = 0; i < l_input.length; i++) {
+        l.push(l_input[i])
+    }
+    for (let i = 0; i < b_input.length; i++) {
+        b.push(b_input[i])
+    }
+
+
     //first_empty_shelf_Id = "1"
     // 1) Проверяем, что нам хватит места на складе для новых товаров (но, 
     //    возможно, товары не удастся разместить, даже если эта проверка прошла)
     let input_data = {
         "arr_models_Id": arr_modelsId,
         "arr_models_sizes": l,
-        "amount of goods of each model": b, 
-        "count_of_empty_shelves": count_of_empty_shelves, 
+        "amount of goods of each model": b,
+        "count_of_empty_shelves": count_of_empty_shelves,
         "arr_shelvesId": arr_shelvesId,
         "arr_shelvesSizes": arr_shelvesSizes,
         "arr_empty_shelvesId": arr_empty_shelvesId,
@@ -413,14 +424,14 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
     empty_space_in_warehouse=0;
 
     /////////////////////////////////////////////////////////////////////////////////////
-    // найти count_of_empty_shelves кол-во полностью свободных полок(у которых occup_size == 0) 
+    // найти count_of_empty_shelves кол-во полностью свободных полок(у которых occup_size == 0)
     /////////////////////////////////////////////////////////////////////////////////////
     //count_of_empty_shelves=16; // заменить
 
     empty_space_in_warehouse +=count_of_empty_shelves*L;
 
     /////////////////////////////////////////////////////////////////////////////////////
-    // найти и поместить в два одномерных массива или в прямоугольный двумерный массив 2*X 
+    // найти и поместить в два одномерных массива или в прямоугольный двумерный массив 2*X
     // все id_полок, которые частично свободны(у которых occup_size != 0) (в первой строке)
     // и соответственно их свободные простр-ва (max_size - occup_size) (во второй строке)
     /////////////////////////////////////////////////////////////////////////////////////
@@ -438,11 +449,11 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
     }
 
     // если размер всех товаров больше, чем свободное пространство склада, выводим сообщение пользователю об этом
-    if (empty_space_in_warehouse<new_goods_size){
-        msg="Недостаточно места на складе!";
+    if (empty_space_in_warehouse < new_goods_size){
+        return ["Недостаточно места на складе!", null, null];
     }
     else{
-        // 2) Предобрабатываем входные данные 
+        // 2) Предобрабатываем входные данные
 
         // делаем копию b, т.к. в ходе работы программы он может изменяться
         b_copy=new Array(n);
@@ -464,17 +475,19 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
         //arr_empty_shelvesId=[1,4,5,8,10,11,12,13,14,15,16,17,18,19,20,21]; // заменить
 
         /////////////////////////////////////////////////////////////////////////////////////
-        // найти с конца first_empty_shelf_Id самый маленький id_полки, у которой occup_size ==0, т.е. id_полки такой, 
+        // найти с конца first_empty_shelf_Id самый маленький id_полки, у которой occup_size ==0, т.е. id_полки такой,
         // что у следующий id_полки-1 occup_size != 0
         // если таких полок нет, т.е. если 1024я полка занята, то пусть id этой полки будет = 1025
         /////////////////////////////////////////////////////////////////////////////////////
-        //first_empty_shelf_Id=10; // заменить 
+        //first_empty_shelf_Id=10; // заменить
         if (arr_empty_shelvesId.length!=0){
             if (first_empty_shelf_Id==1025){
                 // меняем несуществующий id=1025 на последний из существующих id_свободных_полок
                 first_empty_shelf_Id=arr_empty_shelvesId[arr_empty_shelvesId.length-1];
-            } 
-        }else{ // 3.0) случай, когда у нас вообще нет свободных полок 
+            }
+        }else{
+
+            // 3.0) случай, когда у нас вообще нет свободных полок
             // запускаем функцию размещения в частично свободные полки
 
             sum_b_elements=sum(b); // сумма всех эл-в b , нужна будет для проверки, что мы поместили в частично свободные полки хотя бы 1 товар
@@ -487,19 +500,19 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                 for (let i=0; i<arr_id_of_shelves_of_new_goods.length; i++){
                     console.log(arr_id_of_shelves_of_new_goods[i]);
                 }
-        
+
                 /////////////////////////////////////////////////////////////////////////////////////
                 // в переменную last_id_of_goods внести последнюю id_товаров (если нет товаров, то 0)
                 /////////////////////////////////////////////////////////////////////////////////////
                 //last_id_of_goods=0; // заменить
                 tmp_id_of_good=last_id_of_goods+1;
-        
+
                 /////////////////////////////////////////////////////////////////////////////////////
                 // создаем непрямоугольный двумерный массив arr_id_of_new_goods_of_n_models[n][] (c кол-вом строк = n),
                 // в котором i-я строка - массив размера b_copy[i],
                 // заполненный id_новых_товаров, их мы генерируем, опираясь на данные last_id_of_goods
                 // (значения idшек для 0-й модели: от last_id_of_goods+1 до last_id_of_goods+b_copy[0])
-                // и, проходясь циклом по каждому массиву(цикл в цикле), 
+                // и, проходясь циклом по каждому массиву(цикл в цикле),
                 // добавляем в таблицу Товаров новые товары i-й модели, беря modelId = arr_modelsId[i] и id_товаров из i-го сгенерированного массива
                 // попутно можем обновлять таблицу Лога_действий(если можем)
                 /////////////////////////////////////////////////////////////////////////////////////
@@ -513,12 +526,12 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                         tmp_id_of_good++;
                     }
                 }
-        
+
                 console.log("\n");
                 for (let i=0; i<arr_id_of_new_goods_of_n_models.length; i++){
                     console.log(arr_id_of_new_goods_of_n_models[i]);
                 }
-        
+
                 /////////////////////////////////////////////////////////////////////////////////////
                 // имея на этом этапе непрямоугольный двумерный массив arr_id_of_shelves_of_new_goods[n][],
                 // с помощью цикла в цикле заполняем таблицу Хранилища,
@@ -542,7 +555,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
         [l_new,b_new,n_new,arr_of_sizes_place] = initial_process_of_input(l,b,n);
 
         // 3) Запускаем алгоритм МПУ и проводим предобработку результата:
-        //    делим b на b_main и b_others - соответственно отн-ся к тем товарам, 
+        //    делим b на b_main и b_others - соответственно отн-ся к тем товарам,
         //    которые займут опр-ное число полностью пустых полок, и оставшимся товарам
         [alfa,x_floor,b_main, b_others]=run_and_preprocess_result_of_algorithm_mpu(l_new,b_new,n_new);
 
@@ -553,7 +566,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
 
         // находим кол-во целых полок, необходимых для размещения части(меньшей, но не всегда) товаров
         [count_shelves_for_b_others_items, arr_x_alfa]=count_shelves_for_b_others_items_fun(l_new,b_others, n_new);
-        
+
         if (count_of_empty_shelves>=count_shelves_for_b_main_items+count_shelves_for_b_others_items){
             // 3.2) Если товары помещаются в полностью свободные полки, то находим размещение товаров в них
             // но, возможно, в том числе будут использоваться те пустые полки, которые находятся в занятой части склада
@@ -578,16 +591,16 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                     while (x_floor[i][0]>0){
                         tmp_id_shelf=arr_empty_shelvesId_ordered.shift();
                         for (let j=0; j<n_new; j++){
-                                for (let k=0; k<alfa[i][j]; k++){
-                                    arr_id_of_shelves_of_new_goods[j].push(tmp_id_shelf);
-                                }
+                            for (let k=0; k<alfa[i][j]; k++){
+                                arr_id_of_shelves_of_new_goods[j].push(tmp_id_shelf);
                             }
+                        }
                         x_floor[i][0]--;
                     }
-                    
+
                 }
             }
-            // теперь размещаем товары для b_others[] 
+            // теперь размещаем товары для b_others[]
             // а здесь обрабатываем построчно arr_x_alfa[]
             for (let i=0; i<count_shelves_for_b_others_items; i++){
                 tmp_id_shelf=arr_empty_shelvesId_ordered.shift();
@@ -609,7 +622,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
 
             if (sum(b_new)==0){ // 3.3.1) удалось полностью разместить новые товары в полках, дополнительно никаких размещений не требуется
                 msg ="Все товары успешно размещены на складе!";
-            } else if(sum(b_new)==sum_b_elements){ 
+            } else if(sum(b_new)==sum_b_elements){
                 // 3.3.2) ни один товар не поместился ни в одну из полок, значит мы не сможем разместить все новые товары в склад в его текущем состоянии
                 // возможно, если перемещать размещеннпые ранее товары, то можно добиться достаточного места для новых товаров.
                 // но мы не выполняем алгоритм полного перерасчета из той логики, что перестановки старых товаров ради размещения новых могут быть слишком энергозатратны
@@ -620,7 +633,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                 // проверяем для нового b[], можно ли теперь разместить оставшиеся новые товары в полностью пустых полках
 
                 //    Запускаем алгоритм МПУ и проводим предобработку результата:
-                //    делим b на b_main и b_others - соответственно отн-ся к тем товарам, 
+                //    делим b на b_main и b_others - соответственно отн-ся к тем товарам,
                 //    которые займут опр-ное число полностью пустых полок, и оставшимся товарам
                 [alfa,x_floor,b_main, b_others]=run_and_preprocess_result_of_algorithm_mpu(l_new,b_new,n_new);
 
@@ -635,10 +648,10 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                 if (count_of_empty_shelves>=count_shelves_for_b_main_items+count_shelves_for_b_others_items){
                     // Если товары помещаются в полностью свободные полки, то находим размещение товаров в них
                     // но, возможно, в том числе будут использоваться те пустые полки, которые находятся в занятой части склада
-        
+
                     // находим индекс "начала" незанятой части склада
                     index_of__first_empty_shelf_Id=arr_empty_shelvesId.indexOf(first_empty_shelf_Id);
-        
+
                     // Независимо от того, хватает места в незанятой части склада или нет, формируем массив arr_empty_shelvesId_ordered,
                     // который по сути есть переупорядоченный массив arr_empty_shelvesId
                     // сначала копируем id_полок незанятой части, далее - занятой
@@ -649,7 +662,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                     for (let i=0; i<index_of__first_empty_shelf_Id; i++){
                         arr_empty_shelvesId_ordered.push(arr_empty_shelvesId[i]);
                     }
-        
+
                     // определяем размещение товаров в полках
                     // сначала размещаем товары для b_main[]
                     // заполняем arr_id_of_shelves_of_new_goods[][], обрабатывая x_floor[] и каждую строку alfa[i]
@@ -659,16 +672,16 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
                             while (x_floor[i][0]>0){
                                 tmp_id_shelf=arr_empty_shelvesId_ordered.shift();
                                 for (let j=0; j<n_new; j++){
-                                        for (let k=0; k<alfa[i][j]; k++){
-                                            arr_id_of_shelves_of_new_goods[j].push(tmp_id_shelf);
-                                        }
+                                    for (let k=0; k<alfa[i][j]; k++){
+                                        arr_id_of_shelves_of_new_goods[j].push(tmp_id_shelf);
                                     }
+                                }
                                 x_floor[i][0]--;
                             }
-                            
+
                         }
                     }
-                    // теперь размещаем товары для b_others[] 
+                    // теперь размещаем товары для b_others[]
                     // а здесь обрабатываем построчно arr_x_alfa[]
                     for (let i=0; i<count_shelves_for_b_others_items; i++){
                         tmp_id_shelf=arr_empty_shelvesId_ordered.shift();
@@ -718,7 +731,7 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
         // в котором i-я строка - массив размера b_copy[i],
         // заполненный id_новых_товаров, их мы генерируем, опираясь на данные last_id_of_goods
         // (значения idшек для 0-й модели: от last_id_of_goods+1 до last_id_of_goods+b_copy[0])
-        // и, проходясь циклом по каждому массиву(цикл в цикле), 
+        // и, проходясь циклом по каждому массиву(цикл в цикле),
         // добавляем в таблицу Товаров новые товары i-й модели, беря modelId = arr_modelsId[i] и id_товаров из i-го сгенерированного массива
         // попутно можем обновлять таблицу Лога_действий(если можем)
         /////////////////////////////////////////////////////////////////////////////////////
@@ -751,16 +764,15 @@ function add(arr_modelsId,l,b, userId, count_of_empty_shelves, arr_shelvesId, ar
     return [msg, arr_id_of_shelves_of_new_goods, arr_id_of_new_goods_of_n_models]
 }
 
-arr_modelsId=[23,45,56,6];
-l=[3,4,5,7];
-b=[3,5,1,1]; //тест для случая 3.0.1
-//b=[3,5,3,4];
-userId=1;
+// arr_modelsId=[23,45,56,6];
+// l=[3,4,5,7];
+// b=[3,5,1,1]; //тест для случая 3.0.1
+// //b=[3,5,3,4];
+// userId=1;
 
 //console.log(add(arr_modelsId,l,b,userId));
 
 module.exports = {add}
-
 
 
 

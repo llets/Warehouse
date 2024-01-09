@@ -103,7 +103,7 @@ class GoodController{
 
             // Нужно найти первую полку из зоны, где ещё нет товаров (самая дальняя пустая полка, при этом полка перед ней не пустая)
             // Если такой нет, то берётся самая последняя полка, которая никогда не должна быть занята.
-            let last_empty_shelf_id = '1' 
+            let last_empty_shelf_id = '1025'
 
             //Чтобы найти такую полку мы должны найти последнюю непустую полку.
             //Сначала найдём все полки:
@@ -129,7 +129,7 @@ class GoodController{
             //console.log(`arr_empty_shelves_id: ${arr_empty_shelves_id}`)
             //Далее будем с конца проверять, идёт ли после этой непустой полки пустая
             if (arr_notempty_shelves.length == 0)
-                last_empty_shelf_id = '1'
+                last_empty_shelf_id = '1025'
             else{
                 try{    
                     for(let i = arr_notempty_shelves_id.length - 1; i >= 0; i--){
@@ -218,9 +218,13 @@ class GoodController{
                 empty_shelves_count, arr_occupied_shelves_id, arr_occupied_shelves_sizes,
                 arr_empty_shelves_id, last_empty_shelf_id, last_good_id
             )
+            // console.log(result[0],result[1],result[2])
 
             if (result[1] == null || result[2] == null){
-                return next(ApiError.badRequest("Функция раскроя: " + msg))
+                return next(ApiError.badRequest("Функция раскроя: " + result[0]))
+            }
+            else if (result[1].length == 0 || result[2].length == 0){
+                return next(ApiError.badRequest("Функция раскроя: " + result[0]))
             }
             add_msg = result[0]
             arr_shelves_of_new_goods = result[1]
@@ -471,16 +475,16 @@ class GoodController{
         //Удаляем ячейку хранилища. Удаляем товар.
 
         //1. Ищем товар заданной модели
-
-        const {model_Id} = req.params
-        let modelId
-        if (model_Id == undefined){
-            //return res.json("Товаров данной модели на складе нет.")
-            modelId = Math.floor(Math.random() * 3 + 1)
-        }
-        else{
-            modelId = model_Id
-        }
+        //
+        const {modelId} = req.params
+        // let modelId
+        // if (model_Id == undefined){
+        //     //return res.json("Товаров данной модели на складе нет.")
+        //     modelId = Math.floor(Math.random() * 3 + 1)
+        // }
+        // else{
+        //     modelId = model_Id
+        // }
 
         let id
         try{
@@ -492,7 +496,7 @@ class GoodController{
         } catch(e){
             return next(ApiError.badRequest("Поиск товара соответствующей модели для удаления: " + e.message))
         }
-        if (id == null){
+        if (id === undefined || id === null || id < 0){
             return res.json("Товаров данной модели на складе нет!")
         }
 
