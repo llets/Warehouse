@@ -1,7 +1,7 @@
 [
-  {"login": "admin1", "password": "admin1", "role": "ADMIN"},
-  {"login": "admin2", "password": "admin2", "role": "ADMIN"},
-  {"login": "admin3", "password": "admin3", "role": "ADMIN"},
-  {"login": "admin4", "password": "admin4", "role": "ADMIN"},
-  {"login": "admin5", "password": "admin5", "role": "ADMIN"}
+  {"login": "admin1", "password": "admin1A!", "role": "ADMIN"},
+  {"login": "admin2", "password": "admin2A!", "role": "ADMIN"},
+  {"login": "admin3", "password": "admin3A!", "role": "ADMIN"},
+  {"login": "admin4", "password": "admin4A!", "role": "ADMIN"},
+  {"login": "admin5", "password": "admin5A!", "role": "ADMIN"}
 ]

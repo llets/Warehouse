@@ -65,8 +65,10 @@ const DeleteCard = observer(() => {
     const {storage} = useContext(Context)
     const [inputList, setInputList] =
         useState([{id: nextId, modelId: 1, modelName: 'Model', amount: 1}]);
+    const [disabled, setDisabled] = useState(false)
 
     const deleteGoods = async () => {
+        setDisabled(true)
         let arr_models_id = []
         let arr_goods_amount = []
         let arr_model_names = []
@@ -88,7 +90,7 @@ const DeleteCard = observer(() => {
         arr_model_names.map((model_name, index) => {
             storage.deleteByModelName(model_name, arr_goods_amount[index])
         })
-
+        setDisabled(false)
     }
 
     const onAddBtnClick = () => {
@@ -145,7 +147,7 @@ const DeleteCard = observer(() => {
                 }
                 <div className={classes.buttons}>
                     <Button className={classes.addButton} onClick={onAddBtnClick}>+</Button>
-                    <Button className={classes.deleteButton} onClick={deleteGoods}>Delete</Button>
+                    <Button className={classes.deleteButton} onClick={deleteGoods} disabled={disabled}>Delete</Button>
                 </div>
             </div>
         </div>

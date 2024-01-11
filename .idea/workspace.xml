@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49c93abd-73d2-4dd3-a34a-e793a4c51b7d" name="Changes" comment="commit final!">
+    <list default="true" id="49c93abd-73d2-4dd3-a34a-e793a4c51b7d" name="Changes" comment="fixed an error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/contollers/goodController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/contollers/goodController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client2/src/components/AddCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client2/src/components/AddCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client2/src/components/DeleteCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client2/src/components/DeleteCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/postman/users.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/postman/users.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +112,8 @@
       <workItem from="1703513618563" duration="811000" />
       <workItem from="1704202870337" duration="1167000" />
       <workItem from="1704915174114" duration="1148000" />
-      <workItem from="1704957194057" duration="1284000" />
+      <workItem from="1704957194057" duration="1731000" />
+      <workItem from="1704961310920" duration="3272000" />
     </task>
     <task id="LOCAL-00001" summary="Some new files">
       <option name="closed" value="true" />
@@ -184,7 +187,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704813889123</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixed an error">
+      <option name="closed" value="true" />
+      <created>1704958885882</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1704958885882</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,6 +259,7 @@
     <MESSAGE value="React &amp; fixing some bugs." />
     <MESSAGE value="commit final" />
     <MESSAGE value="commit final!" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit final!" />
+    <MESSAGE value="fixed an error" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed an error" />
   </component>
 </project>

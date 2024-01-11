@@ -62,8 +62,11 @@ const AddCard = observer(() => {
     const {user} = useContext(Context)
     const [inputList, setInputList] =
         useState([{id: nextId, modelId: 1, modelName: 'Model', amount: 1}]);
+    const [disabled, setDisabled] = useState(false)
 
     const addGoods = async () => {
+        setDisabled(true)
+
         let arr_models_id = []
         let arr_goods_amount = []
         inputList.map( (item) =>{
@@ -94,6 +97,7 @@ const AddCard = observer(() => {
         } catch (e) {
             alert(e.response.data.message)
         }
+        setDisabled(false)
     }
 
     const onAddBtnClick = () => {
@@ -172,7 +176,7 @@ const AddCard = observer(() => {
                 }
                 <div className={classes.buttons}>
                     <Button className={classes.addButton} onClick={onAddBtnClick}>+</Button>
-                    <Button className={classes.sendButton} onClick={addGoods}>Send</Button>
+                    <Button className={classes.sendButton} onClick={addGoods} disabled={disabled}>Send</Button>
                 </div>
             </div>
         </div>
