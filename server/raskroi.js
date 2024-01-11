@@ -16,7 +16,7 @@ function conversion_num_to_int_if_acceptable(num){
 
 // часть алгоритма МПУ
 // проверка x на оптимальность: если x - оптимальный, то возвращаем его, иначе - возвращаем новые x и alfa
-function checking_x_for_optimality(alfa,x,n){
+function checking_x_for_optimality(alfa,x,n, l){
 
     // Этап 2. Проверить, является ли x оптимальным:
     // Если вектор y - допустимый, то x - оптимальный (по признаку оптимальности).
@@ -128,7 +128,7 @@ function checking_x_for_optimality(alfa,x,n){
             }
         }
         // переходим на этап 2
-        return checking_x_for_optimality(alfa,x,n);
+        return checking_x_for_optimality(alfa,x,n,l);
 
     }
 }
@@ -155,7 +155,7 @@ function algorithm_mpu(l,b,n){
     x=lusolve(alfa, b); // - раскройный план, количество стержней, которые будут раскраиваться по способу alfa[j]
 
     // Этап 2. Проверить, является ли x оптимальным:
-    [alfa,x]=checking_x_for_optimality(alfa,x,n);
+    [alfa,x]=checking_x_for_optimality(alfa,x,n,l);
 
     return [alfa,x];
 }
