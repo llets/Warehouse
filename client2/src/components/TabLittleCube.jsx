@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {observer} from "mobx-react-lite";
 import classes from './Tab.module.css';
-import boxImage from 'C:/Users/Александра/Desktop/Warehouse/client2/src/images/box.png';
+import boxImage from 'D:/Учёба/7сем/аис/проект5/Warehouse/client2/src/images/box.png';
 import {Context} from "../index";
 
 const TabLittleCube = observer(({number, information}) => {
