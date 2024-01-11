@@ -20,7 +20,7 @@ Formation of a working group, distribution of roles is the following:
 * Website design development, implementation in html.
 
 
-**Techno-mathematiker @Lapunch49**
+**Technomathematiker @Lapunch49**
 
 * Development of an algorithm for the placement of new goods.
 
