@@ -1,8 +1,7 @@
-const {Good, Model, Log, Storage, User, Shelf, Size} = require('../models/models')
+const {Good, Model, Storage, User, Shelf, Size} = require('../models/models')
 const { Op } = require("sequelize");
 const rask = require('../raskroi')
 const ApiError = require('../error/ApiError');
-const { random } = require('../db');
 class GoodController{
     async create(req, res, next){
         try{
@@ -103,7 +102,7 @@ class GoodController{
 
             // Нужно найти первую полку из зоны, где ещё нет товаров (самая дальняя пустая полка, при этом полка перед ней не пустая)
             // Если такой нет, то берётся самая последняя полка, которая никогда не должна быть занята.
-            let last_empty_shelf_id = '1025'
+            let last_empty_shelf_id = '1'
 
             //Чтобы найти такую полку мы должны найти последнюю непустую полку.
             //Сначала найдём все полки:
@@ -128,7 +127,7 @@ class GoodController{
             
             //console.log(`arr_empty_shelves_id: ${arr_empty_shelves_id}`)
             //Далее будем с конца проверять, идёт ли после этой непустой полки пустая
-            if (arr_notempty_shelves.length == 0)
+            if (arr_empty_shelves.length == 0)
                 last_empty_shelf_id = '1025'
             else{
                 try{    
@@ -146,7 +145,7 @@ class GoodController{
                     return next(ApiError.badRequest("Проверка, идёт ли после непустой полки пустая: " + e.message))
                 }
             }
-            //console.log(`last empty shelf id: ${last_empty_shelf_id}`)
+            console.log(`last empty shelf id: ${last_empty_shelf_id}`)
 
             //3. Вытаскиваем из бд все непустые и не заполненные полки (в порядке возрастания АЙДИ).
             // Это двумерный массив 
@@ -218,7 +217,7 @@ class GoodController{
                 empty_shelves_count, arr_occupied_shelves_id, arr_occupied_shelves_sizes,
                 arr_empty_shelves_id, last_empty_shelf_id, last_good_id
             )
-            // console.log(result[0],result[1],result[2])
+            console.log(result[0],result[1],result[2])
 
             if (result[1] == null || result[2] == null){
                 return next(ApiError.badRequest("Функция раскроя: " + result[0]))

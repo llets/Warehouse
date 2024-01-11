@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="49c93abd-73d2-4dd3-a34a-e793a4c51b7d" name="Changes" comment="commit final" />
+    <list default="true" id="49c93abd-73d2-4dd3-a34a-e793a4c51b7d" name="Changes" comment="commit final!">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/contollers/goodController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/contollers/goodController.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,6 +109,8 @@
       <workItem from="1703434466917" duration="1167000" />
       <workItem from="1703513618563" duration="811000" />
       <workItem from="1704202870337" duration="1167000" />
+      <workItem from="1704915174114" duration="1148000" />
+      <workItem from="1704957194057" duration="1284000" />
     </task>
     <task id="LOCAL-00001" summary="Some new files">
       <option name="closed" value="true" />
@@ -171,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704812994883</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="commit final!">
+      <option name="closed" value="true" />
+      <created>1704813889122</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1704813889123</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,6 +247,7 @@
     <MESSAGE value="Postman folder for filling fields in DB. Fixing little bugs." />
     <MESSAGE value="React &amp; fixing some bugs." />
     <MESSAGE value="commit final" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit final" />
+    <MESSAGE value="commit final!" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit final!" />
   </component>
 </project>
